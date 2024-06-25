@@ -1,0 +1,39 @@
+[0617/164015.646:VERBOSE1:pref_proxy_config_tracker_impl.cc(187)] 000007EC000D4600: set chrome proxy config service to 000007EC000BC380
+[0617/164015.659:VERBOSE1:webrtc_internals.cc(120)] Could not get the download directory.
+[0617/164015.660:VERBOSE1:media_stream_manager.cc(1113)] MSM::InitializeMaybeAsync([this=000007EC00075680])
+[0617/164015.660:VERBOSE1:media_stream_manager.cc(1113)] MDM::MediaDevicesManager()
+[0617/164015.660:VERBOSE1:media_stream_manager.cc(1113)] MSM::MediaStreamManager([this=000007EC00075680]))
+[0617/164015.686:VERBOSE1:first_party_sets_handler_impl.cc(262)] Empty path. Failed initializing First-Party Sets database.
+[0617/164015.762:ERROR:gpu_init.cc(523)] Passthrough is not supported, GL is disabled, ANGLE is 
+[0617/164015.873:VERBOSE1:network_delegate.cc(34)] NetworkDelegate::NotifyBeforeURLRequest: http://wpad/wpad.dat
+[0617/164015.896:VERBOSE1:pac_file_fetcher_impl.cc(287)] Fetched PAC script had (bad) status line: HTTP/1.1 404 Not Found
+[0617/164015.896:VERBOSE1:configured_proxy_resolution_service.cc(1095)] Failed configuring with PAC script, falling-back to manual proxy servers.
+[0617/164016.804:VERBOSE1:pref_proxy_config_tracker_impl.cc(187)] 000007EC000D7600: set chrome proxy config service to 000007EC001D8280
+[0617/164016.816:VERBOSE1:network_delegate.cc(34)] NetworkDelegate::NotifyBeforeURLRequest: http://wpad/wpad.dat
+[0617/164016.832:VERBOSE1:pac_file_fetcher_impl.cc(287)] Fetched PAC script had (bad) status line: HTTP/1.1 404 Not Found
+[0617/164016.832:VERBOSE1:configured_proxy_resolution_service.cc(1095)] Failed configuring with PAC script, falling-back to manual proxy servers.
+[0617/164016.852:INFO:cpu_info.cc(53)] Available number of cores: 12
+[0617/164016.860:INFO:cpu_info.cc(53)] Available number of cores: 12
+[0617/164016.877:VERBOSE1:frame_impl.cc(503)] frame 17179869185 [4,1] connection request (reason=RENDER_FRAME_CREATED)
+[0617/164016.877:VERBOSE1:frame_host_impl.cc(659)] frame 17179869185 [4,1] (main) connected
+[0617/164016.877:VERBOSE1:media_stream_manager.cc(1113)] RFAOSF::Core() [process_id=4, frame_id=1]
+[0617/164016.882:VERBOSE1:script_context.cc(206)] Created context:
+  extension id:           (none)
+  frame:                  0000019B0020CF90
+  URL:                    
+  context_type:           WEB_PAGE
+  effective extension id: (none)
+  effective context type: WEB_PAGE
+[0617/164016.883:VERBOSE1:script_context.cc(206)] Created context:
+  extension id:           (none)
+  frame:                  0000000000000000
+  URL:                    
+  context_type:           UNSPECIFIED
+  effective extension id: (none)
+  effective context type: UNSPECIFIED
+[0617/164016.883:VERBOSE1:dispatcher.cc(452)] Num tracked contexts: 1
+[0617/164016.885:WARNING:task_impl.cc(20)] No task runner for threadId 6
+[0617/164016.958:WARNING:task_impl.cc(20)] No task runner for threadId 6
+[0617/164017.089:VERBOSE1:frame_host_impl.cc(492)] frame 17179869185 [4,1] (main) detached (reason=NEW_MAIN_FRAME, is_connected=1)
+[0617/164023.907:VERBOSE1:network_delegate.cc(34)] NetworkDelegate::NotifyBeforeURLRequest: http://wpad/wpad.dat
+[0617/164023.908:VERBOSE1:pac_file_fetcher_impl.cc(287)] Fetched PAC script had (bad) status line: HTTP/1.1 404 Not Found
