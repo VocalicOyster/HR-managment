@@ -22,6 +22,14 @@ public class Applicants {
     private String companyName;
     private boolean isDeleted;
 
+    public Applicants(String name, String surname, String fiscalCode, String companyName, boolean isDeleted) {
+        this.name = name;
+        this.surname = surname;
+        this.fiscalCode = fiscalCode;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

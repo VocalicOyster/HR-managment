@@ -28,6 +28,15 @@ public class Employees {
 
     private boolean isDeleted;
 
+    public Employees(String name, String address, String fiscalCode, String hiringDate, String companyName, boolean isDeleted) {
+        this.name = name;
+        this.address = address;
+        this.fiscalCode = fiscalCode;
+        this.hiringDate = hiringDate;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

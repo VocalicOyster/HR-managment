@@ -18,6 +18,13 @@ public class Permits {
 
     private boolean isDeleted;
 
+    public Permits(Employees employees, Integer hours, String companyName, boolean isDeleted) {
+        this.employees = employees;
+        this.hours = hours;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

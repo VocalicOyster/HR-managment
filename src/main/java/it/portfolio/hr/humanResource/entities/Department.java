@@ -25,6 +25,14 @@ public class Department {
     private String companyName;
     private boolean isDeleted;
 
+
+    public Department(String name, String description, String companyName, boolean isDeleted) {
+        this.name = name;
+        this.description = description;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

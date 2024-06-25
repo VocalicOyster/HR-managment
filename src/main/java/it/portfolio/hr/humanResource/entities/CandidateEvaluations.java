@@ -23,6 +23,15 @@ public class CandidateEvaluations {
     private String companyName;
     private boolean isDeleted;
 
+
+    public CandidateEvaluations(Applicants applicants, String description, boolean possibilityOfApplication, String companyName, boolean isDeleted) {
+        this.applicants = applicants;
+        this.description = description;
+        this.possibilityOfApplication = possibilityOfApplication;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

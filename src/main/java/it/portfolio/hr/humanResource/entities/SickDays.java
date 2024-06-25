@@ -19,6 +19,13 @@ public class SickDays {
 
     private boolean isDeleted;
 
+    public SickDays(Employees employees, int days, String companyName, boolean isDeleted) {
+        this.employees = employees;
+        this.days = days;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

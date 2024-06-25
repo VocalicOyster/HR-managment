@@ -27,6 +27,16 @@ public class Vacations {
 
     private String companyName;
 
+
+    public Vacations(String startDate, String finishDate, int days, Employees employees, String companyName, boolean isDeleted) {
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.days = days;
+        this.employees = employees;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     private boolean isDeleted;
 
     public boolean isDeleted() {

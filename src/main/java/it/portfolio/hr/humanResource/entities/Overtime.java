@@ -17,6 +17,13 @@ public class Overtime {
 
     private boolean isDeleted;
 
+    public Overtime(Employees employees, int hours, String companyName, boolean isDeleted) {
+        this.employees = employees;
+        this.hours = hours;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

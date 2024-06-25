@@ -27,6 +27,14 @@ public class Interview {
 
     private boolean isDeleted;
 
+    public Interview(Applicants applicants, String interviewDate, String startTime, String companyName, boolean isDeleted) {
+        this.applicants = applicants;
+        this.interviewDate = interviewDate;
+        this.startTime = startTime;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }

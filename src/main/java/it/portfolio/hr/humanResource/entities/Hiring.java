@@ -42,6 +42,20 @@ public class Hiring {
     @OneToOne
     private Employees employees;
 
+
+    public Hiring(float hourlyPay, Department department, String hiringDate, ControctsEnum controctsEnum, PerTimeEnum perTimeEnum, String IBan, RoleEnum role, Employees employees, String companyName, boolean isDeleted) {
+        this.hourlyPay = hourlyPay;
+        this.department = department;
+        this.hiringDate = hiringDate;
+        this.controctsEnum = controctsEnum;
+        this.perTimeEnum = perTimeEnum;
+        this.IBan = IBan;
+        this.role = role;
+        this.employees = employees;
+        this.companyName = companyName;
+        this.isDeleted = isDeleted;
+    }
+
     private String companyName;
 
     private boolean isDeleted;
