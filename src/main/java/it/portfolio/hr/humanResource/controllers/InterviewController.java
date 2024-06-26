@@ -1,6 +1,9 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.InterviewRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.InterviewResponseDTO;
 import it.portfolio.hr.humanResource.services.InterviewService;
@@ -24,7 +27,7 @@ public class InterviewController {
         InterviewResponseDTO interviewResponseDTO = interviewService.createInterview(interviewRequestDTO, companyName);
         if(interviewResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Intirview created succefully",
                             interviewResponseDTO
@@ -33,7 +36,7 @@ public class InterviewController {
         }
 
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Impossible to create a new interview"
                 )
@@ -46,7 +49,7 @@ public class InterviewController {
         List<InterviewResponseDTO> interview = interviewService.getAllInterview(companyName);
         if(interview.isEmpty()) {
             return ResponseEntity.status(200).body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "No intirview retreived from database",
                             interview
@@ -55,7 +58,7 @@ public class InterviewController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Interviews retreived correctly from database",
                         interview
@@ -69,7 +72,7 @@ public class InterviewController {
         InterviewResponseDTO interview = interviewService.getById(id, companyName);
         if(interview == null) {
             return ResponseEntity.status(200).body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No intirview retreived from database"
                     )
@@ -77,7 +80,7 @@ public class InterviewController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Interviews retreived correctly from database",
                         interview
@@ -91,7 +94,7 @@ public class InterviewController {
         InterviewResponseDTO interviewResponseDTO = interviewService.updateById(id, interviewRequestDTO, companyName);
         if(interviewResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "An error accurred with data"
                     )
@@ -99,7 +102,7 @@ public class InterviewController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Interviews updated correctly",
                         interviewResponseDTO
@@ -113,7 +116,7 @@ public class InterviewController {
         InterviewResponseDTO interviewResponseDTO = interviewService.deleteById(id, companyName);
         if(interviewResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "An error accurred with data"
                     )
@@ -121,7 +124,7 @@ public class InterviewController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Interviews deleted correctly",
                         interviewResponseDTO

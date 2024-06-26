@@ -1,6 +1,8 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
 import it.portfolio.hr.humanResource.models.DTOs.request.OvertimeRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.request.SickDaysRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.OvertimeResponseDTO;
@@ -28,7 +30,7 @@ public class OvertimeController {
 
         if (overtimeResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Overtime created correctly for employee id: " + overtimeRequestDTO.getEmployees_id(),
                             overtimeResponseDTO
@@ -37,7 +39,7 @@ public class OvertimeController {
         }
 
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Unable to create a new overtime"
                 )
@@ -51,7 +53,7 @@ public class OvertimeController {
         List<OvertimeResponseDTO> overtimeResponseDTO = overtimeService.getAll(companyName);
         if (overtimeResponseDTO.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "No data retrieved from database",
                             overtimeResponseDTO
@@ -60,7 +62,7 @@ public class OvertimeController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Overtimes retrieved correctly",
                         overtimeResponseDTO
@@ -75,7 +77,7 @@ public class OvertimeController {
 
         if (overtimeResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Data retrieved correctly from database",
                             overtimeResponseDTO
@@ -83,7 +85,7 @@ public class OvertimeController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "No overtime day retrieved from database"
                 )
@@ -96,7 +98,7 @@ public class OvertimeController {
         List<OvertimeResponseDTO> overtimeResponseDTO = overtimeService.getByName(name, companyName);
         if(overtimeResponseDTO.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "No data retrieved from database",
                             overtimeResponseDTO
@@ -104,7 +106,7 @@ public class OvertimeController {
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Overtime retrieved from database for employee: " + name,
                         overtimeResponseDTO
@@ -118,7 +120,7 @@ public class OvertimeController {
         OvertimeResponseDTO overtimeResponseDTO = overtimeService.update(id, overtimeRequestDTO, companyName);
         if (overtimeResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Data updated correctly in database",
                             overtimeResponseDTO
@@ -126,7 +128,7 @@ public class OvertimeController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "No overtime retrieved from database"
                 )
@@ -139,7 +141,7 @@ public class OvertimeController {
         OvertimeResponseDTO overtimeResponseDTO = overtimeService.delete(id, companyName);
         if(overtimeResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Data deleted correctly in database",
                             overtimeResponseDTO
@@ -147,7 +149,7 @@ public class OvertimeController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "No overtime day retrieved from database"
                 )

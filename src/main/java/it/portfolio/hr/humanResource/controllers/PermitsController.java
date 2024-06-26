@@ -1,6 +1,9 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.PermitsRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.OvertimeResponseDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.PermitsResponseDTO;
@@ -26,7 +29,7 @@ public class PermitsController {
         PermitsResponseDTO permitsResponseDTO = permitsService.create(permitsRequestDTO, companyName);
         if(permitsResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Permits created successfully",
                             permitsResponseDTO
@@ -34,7 +37,7 @@ public class PermitsController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Impossible to create a permit for employees id: " + permitsRequestDTO.getEmployees_id()
                 )
@@ -48,7 +51,7 @@ public class PermitsController {
         PermitsResponseDTO permitsResponseDTO = permitsService.getById(id, companyName);
         if(permitsResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Permits retrieved successfully",
                             permitsResponseDTO
@@ -56,7 +59,7 @@ public class PermitsController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Impossible to retrieve a permit for employees id: " + id
                 )
@@ -71,16 +74,15 @@ public class PermitsController {
 
         if(responseDTOList.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
-                            "No Data retrieved from database",
-                            responseDTOList
+                            "No Data retrieved from database"
                     )
             );
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Permits retrieved successfully",
                         responseDTOList
@@ -94,15 +96,14 @@ public class PermitsController {
         List<PermitsResponseDTO> permitsResponseDTOList = permitsService.getByName(name, companyName);
         if(permitsResponseDTOList.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
-                            "No data retrieved from database",
-                            permitsResponseDTOList
+                            "No data retrieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Permits retrieved from database for employee: " + name,
                         permitsResponseDTOList
@@ -117,7 +118,7 @@ public class PermitsController {
 
         if(permitsResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Permits updated successfully",
                             permitsResponseDTO
@@ -125,7 +126,7 @@ public class PermitsController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Unable to update the permits for the id: " + id
                 )
@@ -139,7 +140,7 @@ public class PermitsController {
 
         if(permitsResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Permits deleted successfully",
                             permitsResponseDTO
@@ -147,7 +148,7 @@ public class PermitsController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Unable to delete the permits for the id: " + id
                 )

@@ -3,6 +3,9 @@ package it.portfolio.hr.humanResource.controllers;
 import it.portfolio.hr.humanResource.exceptions.employee.HiringNotFoundException;
 import it.portfolio.hr.humanResource.exceptions.employee.InvalidEmployeeException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.EmployeesRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.EmployeesResponseDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.SituationResponseDTO;
@@ -27,13 +30,13 @@ public class EmployeeController {
         EmployeesResponseDTO response = employeeService.createEmployee(employees, companyName);
         if(response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(400,
+                    new ResponseInvalid(400,
                             "Unable to create due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(200,
+                new ResponseValid(200,
                         "Employee created correctly",
                         response)
         );
@@ -45,7 +48,7 @@ public class EmployeeController {
         List<EmployeesResponseDTO> responseDTOList = employeeService.getAllEmployees(companyName);
         if (responseDTOList.isEmpty()) {
             return ResponseEntity.status(200).body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No data retrieved from database"
                     )
@@ -53,7 +56,7 @@ public class EmployeeController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly from database",
                         responseDTOList
@@ -67,7 +70,7 @@ public class EmployeeController {
         EmployeesResponseDTO employees = employeeService.getById(id, companyName);
         if (employees == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Invalid ID"
                     )
@@ -75,8 +78,8 @@ public class EmployeeController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
-                        200,
+                new ResponseValid(
+                       200,
                         "Data retrieved correctly from database",
                         employees
                 )
@@ -89,7 +92,7 @@ public class EmployeeController {
         EmployeesResponseDTO employees = employeeService.getByFiscalCode(fiscalCode, companyName);
         if (employees == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Invalid Fiscal Code"
                     )
@@ -97,7 +100,7 @@ public class EmployeeController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly from database",
                         employees
@@ -113,14 +116,14 @@ public class EmployeeController {
 
         if(situationResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Employees name in not in database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly fro employee: " + name,
                         situationResponseDTO
@@ -136,7 +139,7 @@ public class EmployeeController {
         EmployeesResponseDTO employeesResponseDTO = employeeService.updateById(id, employeesRequestDTO, companyName);
         if (employeesResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Invalid Fiscal Code"
                     )
@@ -144,7 +147,7 @@ public class EmployeeController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data updated correctly",
                         employeesResponseDTO
@@ -158,7 +161,7 @@ public class EmployeeController {
         EmployeesResponseDTO response = employeeService.deleteById(id, companyName);
         if (response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Invalid Id"
                     )
@@ -166,7 +169,7 @@ public class EmployeeController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data deleted correctly",
                         response

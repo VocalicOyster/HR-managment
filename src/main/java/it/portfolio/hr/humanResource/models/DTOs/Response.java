@@ -1,15 +1,8 @@
 package it.portfolio.hr.humanResource.models.DTOs;
 
-public class Response {
+public abstract class Response {
     private int status;
     private String message;
-    private Object data;
-
-    public Response(int status, String message, Object data) {
-        this.status = status;
-        this.message = message;
-        this.data = data;
-    }
 
     public Response(int status, String message) {
         this.status = status;
@@ -27,7 +20,4 @@ public class Response {
         return message;
     }
 
-    public Object getData() {
-        return data;
-    }
 }

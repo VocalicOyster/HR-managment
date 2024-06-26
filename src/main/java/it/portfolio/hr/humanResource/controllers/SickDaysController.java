@@ -1,6 +1,9 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.SickDaysRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.OvertimeResponseDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.SickDaysResponseDTO;
@@ -26,7 +29,7 @@ public class SickDaysController {
 
         if (sickDaysRequestDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Sick day created correctly for employee id: " + sickDaysRequestDTO.getEmployees_id(),
                             sickDaysResponseDTO
@@ -35,7 +38,7 @@ public class SickDaysController {
         }
 
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "Unable to create a new Sick day"
                 )
@@ -49,16 +52,15 @@ public class SickDaysController {
         List<SickDaysResponseDTO> sickDaysResponseDTO = sickDaysService.getAll(companyName);
         if (sickDaysResponseDTO.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
-                            "No data retrieved from database",
-                            sickDaysResponseDTO
+                            "No data retrieved from database"
                     )
             );
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Sick day retrieved correctly",
                         sickDaysResponseDTO
@@ -73,16 +75,16 @@ public class SickDaysController {
 
         if (sickDaysResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Data retrieved correctly from database",
                             sickDaysResponseDTO
                     )
             );
         }
-        return ResponseEntity.status(400).body(
-                new Response(
-                        400,
+        return ResponseEntity.ok().body(
+                new ResponseValidNoData(
+                        200,
                         "No Sick day retrieved from database"
                 )
         );
@@ -94,15 +96,14 @@ public class SickDaysController {
         List<SickDaysResponseDTO> sickDaysResponseDTOList = sickDaysService.getByName(name, companyName);
         if(sickDaysResponseDTOList.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
-                            "No data retrieved from database",
-                            sickDaysResponseDTOList
+                            "No data retrieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Sick Days retrieved from database for employee: " + name,
                         sickDaysResponseDTOList
@@ -116,16 +117,16 @@ public class SickDaysController {
         SickDaysResponseDTO sickDaysResponseDTO = sickDaysService.update(id, sickDaysRequestDTO, companyName);
         if (sickDaysResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Data updated correctly in database",
                             sickDaysResponseDTO
                     )
             );
         }
-        return ResponseEntity.status(400).body(
-                new Response(
-                        400,
+        return ResponseEntity.status(200).body(
+                new ResponseValidNoData(
+                        200,
                         "No Sick day retrieved from database"
                 )
         );
@@ -137,16 +138,16 @@ public class SickDaysController {
         SickDaysResponseDTO sickDaysResponseDTO = sickDaysService.delete(id, companyName);
         if(sickDaysResponseDTO != null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Data deleted correctly in database",
                             sickDaysResponseDTO
                     )
             );
         }
-        return ResponseEntity.status(400).body(
-                new Response(
-                        400,
+        return ResponseEntity.ok().body(
+                new ResponseValidNoData(
+                        200,
                         "No Sick day retrieved from database"
                 )
         );

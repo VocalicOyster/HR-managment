@@ -1,6 +1,8 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
 import it.portfolio.hr.humanResource.models.DTOs.request.JobAnnouncementRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.JobAnnouncementResponseDTO;
 import it.portfolio.hr.humanResource.services.JobAnnouncementService;
@@ -24,7 +26,7 @@ public class JobAnnouncementController {
         JobAnnouncementResponseDTO responseDTO = jobAnnouncementService.createAnnounce(jobAnnouncementRequestDTO, companyName);
         if(responseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to create an announce due to data error"
                     )
@@ -32,7 +34,7 @@ public class JobAnnouncementController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Announce created successfully",
                         responseDTO
@@ -45,7 +47,7 @@ public class JobAnnouncementController {
         List<JobAnnouncementResponseDTO> jobList = jobAnnouncementService.getAll(companyName);
         if(jobList.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "No data retrieved from Database",
                             jobList
@@ -54,7 +56,7 @@ public class JobAnnouncementController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly from Database",
                         jobList
@@ -68,14 +70,14 @@ public class JobAnnouncementController {
         JobAnnouncementResponseDTO jobAnnouncementResponseDTO = jobAnnouncementService.getById(id, companyName);
         if(jobAnnouncementResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "No data retrieved from Database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly from Database",
                         jobAnnouncementResponseDTO
@@ -89,7 +91,7 @@ public class JobAnnouncementController {
         JobAnnouncementResponseDTO responseDTO = jobAnnouncementService.updateById(requestDTO, id, companyName);
         if(responseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to update due to data error"
                     )
@@ -97,7 +99,7 @@ public class JobAnnouncementController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data updated correctly",
                         responseDTO
@@ -111,14 +113,14 @@ public class JobAnnouncementController {
         JobAnnouncementResponseDTO responseDTO = jobAnnouncementService.deleteById(id, companyName);
         if(responseDTO == null) {
                 return ResponseEntity.status(400).body(
-                        new Response(
+                        new ResponseInvalid(
                                 400,
                                 "Unable to delete due to data error"
                         )
                 );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data deleted correctly",
                         responseDTO

@@ -1,6 +1,9 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.CandidateEvaluationRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.CandidatesEvaluationResponseDTO;
 import it.portfolio.hr.humanResource.services.CandidateEvaluationService;
@@ -25,14 +28,14 @@ public class CandidateEvaluationController {
         CandidatesEvaluationResponseDTO response = candidateEvaluationService.createCandidateEv(candidateEvaluationRequestDTO, companyName);
         if(response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "An error accurred with data"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Candidate Evaluation created successfully",
                         response
@@ -47,14 +50,14 @@ public class CandidateEvaluationController {
         List<CandidatesEvaluationResponseDTO> response = candidateEvaluationService.getAllCanEv(companyName);
         if (response.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No data retrieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly",
                         response
@@ -68,14 +71,14 @@ public class CandidateEvaluationController {
         CandidatesEvaluationResponseDTO candidateDTO = candidateEvaluationService.getById(id, companyName);
         if (candidateDTO == null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No data retrieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved Successfully",
                         candidateDTO
@@ -89,14 +92,14 @@ public class CandidateEvaluationController {
         CandidatesEvaluationResponseDTO responseDTO = candidateEvaluationService.updateCandidate(id, candidateDTO, companyName);
         if (responseDTO == null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No data retrieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved Successfully",
                         responseDTO
@@ -110,14 +113,14 @@ public class CandidateEvaluationController {
         CandidatesEvaluationResponseDTO response = candidateEvaluationService.deleteById(id, companyName);
         if (response == null) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "Candidate evaluation not retrieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Candidate evaluation deleted successfully",
                         response

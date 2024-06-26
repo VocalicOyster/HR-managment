@@ -22,10 +22,11 @@ public class Vacations {
     private String finishDate;
     @Column(nullable = false)
     private int days; //INTESO IN ORE
-    @OneToOne
+    @ManyToOne
     private Employees employees;
 
     private String companyName;
+
 
 
     public Vacations(String startDate, String finishDate, int days, Employees employees, String companyName, boolean isDeleted) {

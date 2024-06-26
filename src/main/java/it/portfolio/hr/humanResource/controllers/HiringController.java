@@ -2,6 +2,9 @@ package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.exceptions.hirirng.*;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.HiringRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.HiringResponseDTO;
 import it.portfolio.hr.humanResource.services.HiringService;
@@ -25,14 +28,14 @@ public class HiringController {
         HiringResponseDTO hiringResponseDTO = hiringService.createHiring(hiringRequestDTO, companyName);
         if (hiringResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to create an hiring due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValidNoData(
                         200,
                         "Hiring create successfully"
                 )
@@ -46,7 +49,7 @@ public class HiringController {
         List<HiringResponseDTO> hiringResponseDTOList = hiringService.getAll(companyName);
         if (hiringResponseDTOList.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "No data retieved from database",
                             hiringResponseDTOList
@@ -54,7 +57,7 @@ public class HiringController {
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retieved correctly from database",
                         hiringResponseDTOList
@@ -68,14 +71,14 @@ public class HiringController {
         HiringResponseDTO hiringResponseDTO = hiringService.getById(id, companyName);
         if (hiringResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "No data retieved from database"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retieved correctly from database",
                         hiringResponseDTO
@@ -89,14 +92,14 @@ public class HiringController {
         HiringResponseDTO hiringResponseDTO = hiringService.updateById(id, hiringRequestDTO, companyName);
         if (hiringResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to update due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data updated correctly from database",
                         hiringResponseDTO
@@ -110,14 +113,14 @@ public class HiringController {
         HiringResponseDTO hiringResponseDTO = hiringService.deleteById(id, companyName);
         if (hiringResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to update due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data updated correctly from database",
                         hiringResponseDTO

@@ -1,6 +1,8 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
 import it.portfolio.hr.humanResource.models.DTOs.request.RegistrationRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.request.UserRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.RegistrationResponseDTO;
@@ -26,14 +28,14 @@ public class RegistrationController {
         RegistrationResponseDTO registrationResponseDTO = registerService.saveUser(registrationRequestDTO);
         if(registrationResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Error with data"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "User registered with success",
                         registrationResponseDTO
@@ -45,7 +47,7 @@ public class RegistrationController {
         UserResponseDTO userResponseDTO = userService.updateUserById(id, userRequestDTO);
         if(userResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Error with data"
                     )
@@ -53,7 +55,7 @@ public class RegistrationController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "User registered with success",
                         userResponseDTO

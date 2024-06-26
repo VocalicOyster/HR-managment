@@ -2,6 +2,7 @@ package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.entities.Employees;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
 import it.portfolio.hr.humanResource.repositories.EmployeesRepository;
 import it.portfolio.hr.humanResource.services.FileStorageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,14 +35,14 @@ public class PaycheckController {
         try {
             File uploadedFile = fileStorageService.upload(file, id, companyName);
             return ResponseEntity.ok().body(
-                    new Response(200,
+                    new it.portfolio.hr.humanResource.models.DTOs.ResponseValid(200,
                             "File uploaded correctly",
                             uploadedFile
                     )
             );
         } catch (IOException e) {
             return ResponseEntity.status(400).body(
-                    new Response(400,
+                    new ResponseInvalid(400,
                             e.getMessage()
                     )
             );

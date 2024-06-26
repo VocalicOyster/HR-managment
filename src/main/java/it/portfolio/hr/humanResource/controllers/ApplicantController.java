@@ -3,6 +3,9 @@ package it.portfolio.hr.humanResource.controllers;
 import it.portfolio.hr.humanResource.exceptions.applicant.BadApplicantCredentialsException;
 import it.portfolio.hr.humanResource.exceptions.applicant.NoApplicantException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValidNoData;
 import it.portfolio.hr.humanResource.models.DTOs.request.ApplicantRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.ApplicantResponseDTO;
 import it.portfolio.hr.humanResource.services.ApplicantServices;
@@ -29,14 +32,14 @@ public class ApplicantController {
         ApplicantResponseDTO applicantResponseDTO = applicantServices.createNewApplicant(applicantRequestDTO, companyName);
         if (applicantResponseDTO == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to update due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "New Applicant created Correctly",
                         applicantResponseDTO
@@ -51,7 +54,7 @@ public class ApplicantController {
 
         if (applicantResponseDTOList.isEmpty()) {
             return ResponseEntity.status(200).body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No data retrieved from database"
                     )
@@ -59,7 +62,7 @@ public class ApplicantController {
         }
 
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly",
                         applicantResponseDTOList
@@ -73,14 +76,14 @@ public class ApplicantController {
         ApplicantResponseDTO applicantResponseDTO = applicantServices.getById(id, companyName);
         if (applicantResponseDTO == null) {
             return ResponseEntity.status(200).body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No data retrieved from database"
                     )
             );
         }
         return ResponseEntity.status(200).body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly",
                         applicantResponseDTO
@@ -94,7 +97,7 @@ public class ApplicantController {
         if (applicantValidator.isApplicantValidPut(applicantRequestDTO)) {
             ApplicantResponseDTO applicantResponseDTO = applicantServices.updateById(id, applicantRequestDTO, companyName);
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "Applicant updates correctly",
                             applicantResponseDTO
@@ -102,7 +105,7 @@ public class ApplicantController {
             );
         }
         return ResponseEntity.status(400).body(
-                new Response(
+                new ResponseInvalid(
                         400,
                         "An error accurred with data"
                 )
@@ -116,14 +119,14 @@ public class ApplicantController {
         ApplicantResponseDTO applicantResponseDTO = applicantServices.deleteById(id, companyName);
         if(applicantResponseDTO == null) {
             return ResponseEntity.status(200).body(
-                    new Response(
+                    new ResponseValidNoData(
                             200,
                             "No Applicant retrieved from database with this id"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Applicant deleted correctly",
                         applicantResponseDTO

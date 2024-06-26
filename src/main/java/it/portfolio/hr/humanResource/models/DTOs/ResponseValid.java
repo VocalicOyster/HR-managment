@@ -1,0 +1,10 @@
+package it.portfolio.hr.humanResource.models.DTOs;
+
+public class ResponseValid extends Response{
+    private Object data;
+
+    public ResponseValid(int status, String message, Object data) {
+        super(status, message);
+        this.data = data;
+    }
+}

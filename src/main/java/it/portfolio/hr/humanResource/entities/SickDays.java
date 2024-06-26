@@ -19,6 +19,9 @@ public class SickDays {
 
     private boolean isDeleted;
 
+    public SickDays() {
+    }
+
     public SickDays(Employees employees, int days, String companyName, boolean isDeleted) {
         this.employees = employees;
         this.days = days;

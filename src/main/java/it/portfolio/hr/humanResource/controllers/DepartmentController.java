@@ -3,6 +3,8 @@ package it.portfolio.hr.humanResource.controllers;
 import it.portfolio.hr.humanResource.exceptions.department.DepartmentException;
 import it.portfolio.hr.humanResource.exceptions.department.DepartmentExistException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
 import it.portfolio.hr.humanResource.models.DTOs.request.DepartmentRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.DepartmentResponseDTO;
 import it.portfolio.hr.humanResource.services.DepartmentService;
@@ -27,14 +29,14 @@ public class DepartmentController {
         DepartmentResponseDTO response = departmentService.createDepartment(departmentRequestDTO, companyName);
         if (response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to create due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly from database",
                         response
@@ -49,7 +51,7 @@ public class DepartmentController {
         List<DepartmentResponseDTO> responseDTOList = departmentService.getAll(companyName);
         if (responseDTOList.isEmpty()) {
             return ResponseEntity.ok().body(
-                    new Response(
+                    new ResponseValid(
                             200,
                             "No data retrieved from database",
                             responseDTOList
@@ -57,7 +59,7 @@ public class DepartmentController {
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved correctly from database",
                         responseDTOList
@@ -72,14 +74,14 @@ public class DepartmentController {
         DepartmentResponseDTO response = departmentService.getById(id, companyName);
         if (response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to retrieve due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data retrieved from database successfully",
                         response
@@ -94,14 +96,14 @@ public class DepartmentController {
         DepartmentResponseDTO response = departmentService.updateById(id, departmentRequestDTO, companyName);
         if (response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to update due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data updated successfully",
                         response
@@ -116,14 +118,14 @@ public class DepartmentController {
         DepartmentResponseDTO response = departmentService.deleteById(id, companyName);
         if (response == null) {
             return ResponseEntity.status(400).body(
-                    new Response(
+                    new ResponseInvalid(
                             400,
                             "Unable to delete due to data error"
                     )
             );
         }
         return ResponseEntity.ok().body(
-                new Response(
+                new ResponseValid(
                         200,
                         "Data deleted successfully from database",
                         response

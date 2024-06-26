@@ -22,6 +22,9 @@ public class JobAnnouncement {
 
     private boolean isDeleted;
 
+    public JobAnnouncement() {
+    }
+
     public JobAnnouncement(ControctsEnum controctsEnum, String description, PerTimeEnum perTimeEnum, String title, Department department, String companyName, boolean isDeleted) {
         this.controctsEnum = controctsEnum;
         this.description = description;
