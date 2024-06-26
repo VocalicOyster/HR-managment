@@ -3,6 +3,7 @@ package it.portfolio.hr.humanResource.controllers;
 import it.portfolio.hr.humanResource.entities.Employees;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
 import it.portfolio.hr.humanResource.repositories.EmployeesRepository;
 import it.portfolio.hr.humanResource.services.FileStorageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +56,8 @@ public class PaycheckController {
         try {
             Employees employees = employeesRepository.findById(id, companyName).orElse(null);
             if (employees == null) {
-                throw new IOException("Employee with id " + id + " not found");
+                response.setStatus(400);
+                return null;
             }
             String m = Month.of(month).toString().toUpperCase();
             String fileName = employees.getName() + m + String.valueOf(LocalDate.now().getYear()) + ".pdf";
@@ -64,8 +66,54 @@ public class PaycheckController {
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             return fileStorageService.downloadById(fileName);
         } catch (IOException e) {
-            ResponseEntity.status(400);
+            response.setStatus(400);
             return null;
         }
+    }
+
+    @PostMapping("/delete/{id}/{month}/{year}")
+    public ResponseEntity<Response> deleteById(@PathVariable Long id, @PathVariable int month, @PathVariable String year, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        Employees employees = employeesRepository.findById(id, companyName).orElse(null);
+
+        if (employees == null) {
+            return ResponseEntity.status(400).body(
+                    new ResponseInvalid(
+                            400,
+                            "No employee retrieved for id " + id
+                    )
+            );
+        }
+        String m = Month.of(month).toString().toUpperCase();
+        String fileName = employees.getName() + m + year + ".pdf";
+        if (fileStorageService.deleteById(fileName)) {
+            return ResponseEntity.ok().body(
+                    new ResponseValid(
+                            200,
+                            "Employee paycheck deleted correctly",
+                            fileName
+                    )
+            );
+        }
+
+        return ResponseEntity.status(400).body(
+                new ResponseInvalid(
+                        400,
+                        "Paycheck for " + m + " " + year + " of employee " + employees.getName() + " is not in database"
+                )
+        );
+    }
+
+    @GetMapping("/downloadAll/{id}")
+    public byte[] downloadAll(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String companyName = (String) request.getAttribute("companyName");
+        String fileName = fileStorageService.downloadAllBYEmployeeId(id, companyName);
+        if(fileName == null) {
+            response.setStatus(400);
+            return null;
+        }
+        response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        return fileStorageService.downloadById(fileName);
     }
 }

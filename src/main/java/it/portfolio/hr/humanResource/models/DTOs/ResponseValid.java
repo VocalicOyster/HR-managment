@@ -7,4 +7,12 @@ public class ResponseValid extends Response{
         super(status, message);
         this.data = data;
     }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
 }
