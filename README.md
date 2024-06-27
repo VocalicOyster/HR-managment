@@ -1,6 +1,6 @@
 # HR Managment per aziende
 
-<img src="/images/Designer.png" width="250" height="250" alt="a">
+<img src="/images/Designer.png" width="250" height="250" style="border-radius: 10px;" alt="a">
 
 # indice
 - [Breve introduzione](#introduzione)
