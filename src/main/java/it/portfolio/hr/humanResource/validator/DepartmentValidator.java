@@ -1,8 +1,6 @@
 package it.portfolio.hr.humanResource.validator;
 
 import it.portfolio.hr.humanResource.entities.Department;
-import it.portfolio.hr.humanResource.exceptions.department.DepartmentException;
-import it.portfolio.hr.humanResource.exceptions.department.DepartmentExistException;
 import it.portfolio.hr.humanResource.models.DTOs.request.DepartmentRequestDTO;
 import it.portfolio.hr.humanResource.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

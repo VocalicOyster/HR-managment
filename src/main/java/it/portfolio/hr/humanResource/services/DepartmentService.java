@@ -2,7 +2,6 @@ package it.portfolio.hr.humanResource.services;
 
 import it.portfolio.hr.humanResource.entities.Department;
 import it.portfolio.hr.humanResource.exceptions.department.DepartmentException;
-import it.portfolio.hr.humanResource.exceptions.department.DepartmentExistException;
 import it.portfolio.hr.humanResource.models.DTOs.request.DepartmentRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.DepartmentResponseDTO;
 import it.portfolio.hr.humanResource.repositories.DepartmentRepository;
@@ -26,7 +25,7 @@ public class DepartmentService {
     private ModelMapper modelMapper;
 
 
-    public DepartmentResponseDTO createDepartment(DepartmentRequestDTO request, String companyName) {
+    public DepartmentResponseDTO createDepartment(DepartmentRequestDTO request, String companyName) throws DepartmentException {
         if (departmentValidator.isDepartmpentValid(request, companyName)) {
             Department department = modelMapper.map(request, Department.class);
             department.setCompanyName(companyName);
@@ -34,7 +33,7 @@ public class DepartmentService {
             departmentRepository.saveAndFlush(department);
             return modelMapper.map(department, DepartmentResponseDTO.class);
         }
-        return null;
+        throw new DepartmentException("The inserted department informations are not valid", 400);
     }
 
     public List<DepartmentResponseDTO> getAll(String companyName)  {
@@ -48,20 +47,13 @@ public class DepartmentService {
         return departmentResponseDTO;
     }
 
-    public DepartmentResponseDTO getById(Long id, String companyName) {
-        Department department = departmentRepository.findById(id, companyName).orElse(null);
-        if (department == null) {
-           return  null;
-        }
+    public DepartmentResponseDTO getById(Long id, String companyName) throws DepartmentException {
+        Department department = departmentRepository.findById(id, companyName).orElseThrow(() -> new DepartmentException("No department retireved with id: " + id, 400));
         return modelMapper.map(department, DepartmentResponseDTO.class);
     }
 
-    public DepartmentResponseDTO updateById(Long id, DepartmentRequestDTO request, String companyName){
-        Department department = departmentRepository.findById(id, companyName).orElse(null);
-
-        if (department == null) {
-           return null;
-        }
+    public DepartmentResponseDTO updateById(Long id, DepartmentRequestDTO request, String companyName) throws DepartmentException {
+        Department department = departmentRepository.findById(id, companyName).orElseThrow(() -> new DepartmentException("No department retireved with id: " + id, 400));
 
         department.setName(request.getName());
         department.setDescription(request.getDescription());
@@ -69,12 +61,8 @@ public class DepartmentService {
         return modelMapper.map(department, DepartmentResponseDTO.class);
     }
 
-    public DepartmentResponseDTO deleteById(Long id, String companyName) {
-        Department department = departmentRepository.findById(id, companyName).orElse(null);
-
-        if (department == null) {
-           return null;
-        }
+    public DepartmentResponseDTO deleteById(Long id, String companyName) throws DepartmentException {
+        Department department = departmentRepository.findById(id, companyName).orElseThrow(() -> new DepartmentException("No department retireved with id: " + id, 400));
 
         //departmentRepository.deleteById(id);
         department.setDeleted(true);

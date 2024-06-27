@@ -1,7 +1,6 @@
 package it.portfolio.hr.humanResource.controllers;
 
-import it.portfolio.hr.humanResource.exceptions.applicant.BadApplicantCredentialsException;
-import it.portfolio.hr.humanResource.exceptions.applicant.NoApplicantException;
+import it.portfolio.hr.humanResource.exceptions.applicant.ApplicantException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
@@ -29,22 +28,12 @@ public class ApplicantController {
     @PostMapping("/")
     public ResponseEntity<Response> createApplicant(@RequestBody ApplicantRequestDTO applicantRequestDTO, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        ApplicantResponseDTO applicantResponseDTO = applicantServices.createNewApplicant(applicantRequestDTO, companyName);
-        if (applicantResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Unable to update due to data error"
-                    )
-            );
+        try {
+            ApplicantResponseDTO applicantResponseDTO = applicantServices.createNewApplicant(applicantRequestDTO, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "New Applicant created Correctly", applicantResponseDTO));
+        } catch (ApplicantException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "New Applicant created Correctly",
-                        applicantResponseDTO
-                )
-        );
     }
 
     @GetMapping("/list")
@@ -53,85 +42,47 @@ public class ApplicantController {
         List<ApplicantResponseDTO> applicantResponseDTOList = applicantServices.getAllApplicant(companyName);
 
         if (applicantResponseDTOList.isEmpty()) {
-            return ResponseEntity.status(200).body(
-                    new ResponseValidNoData(
-                            200,
-                            "No data retrieved from database"
-                    )
-            );
+            return ResponseEntity.status(200).body(new ResponseValidNoData(200, "No data retrieved from database"));
         }
 
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Data retrieved correctly",
-                        applicantResponseDTOList
-                )
-        );
+        return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly", applicantResponseDTOList));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getById(@PathVariable Long id, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        ApplicantResponseDTO applicantResponseDTO = applicantServices.getById(id, companyName);
-        if (applicantResponseDTO == null) {
-            return ResponseEntity.status(200).body(
-                    new ResponseValidNoData(
-                            200,
-                            "No data retrieved from database"
-                    )
-            );
+        try {
+            ApplicantResponseDTO applicantResponseDTO = applicantServices.getById(id, companyName);
+
+            return ResponseEntity.status(200).body(new ResponseValid(200, "Data retrieved correctly", applicantResponseDTO));
+        } catch (ApplicantException e) {
+            return ResponseEntity.status(400).body(new ResponseValidNoData(400, e.getMessage()));
         }
-        return ResponseEntity.status(200).body(
-                new ResponseValid(
-                        200,
-                        "Data retrieved correctly",
-                        applicantResponseDTO
-                )
-        );
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Response> updateApplicantById(@PathVariable Long id, @RequestBody ApplicantRequestDTO applicantRequestDTO, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        if (applicantValidator.isApplicantValidPut(applicantRequestDTO)) {
+        try {
             ApplicantResponseDTO applicantResponseDTO = applicantServices.updateById(id, applicantRequestDTO, companyName);
-            return ResponseEntity.ok().body(
-                    new ResponseValid(
-                            200,
-                            "Applicant updates correctly",
-                            applicantResponseDTO
-                    )
-            );
-        }
-        return ResponseEntity.status(400).body(
-                new ResponseInvalid(
-                        400,
-                        "An error accurred with data"
-                )
-        );
+            return ResponseEntity.ok().body(new ResponseValid(200, "Applicant updates correctly", applicantResponseDTO));
 
+        } catch (ApplicantException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, "An error accurred with data"));
+        }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteById(@PathVariable Long id, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        ApplicantResponseDTO applicantResponseDTO = applicantServices.deleteById(id, companyName);
-        if(applicantResponseDTO == null) {
-            return ResponseEntity.status(200).body(
-                    new ResponseValidNoData(
-                            200,
-                            "No Applicant retrieved from database with this id"
-                    )
-            );
+        try {
+            ApplicantResponseDTO applicantResponseDTO = applicantServices.deleteById(id, companyName);
+
+            return ResponseEntity.ok().body(new ResponseValid(200, "Applicant deleted correctly", applicantResponseDTO));
+        } catch (ApplicantException e) {
+            return ResponseEntity.status(400).body(new ResponseValidNoData(400, e.getMessage()));
         }
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Applicant deleted correctly",
-                        applicantResponseDTO
-                )
-        );
 
     }
 }

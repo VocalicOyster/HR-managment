@@ -1,6 +1,7 @@
 package it.portfolio.hr.humanResource.services;
 
 import it.portfolio.hr.humanResource.entities.User;
+import it.portfolio.hr.humanResource.exceptions.registration.RegistrationException;
 import it.portfolio.hr.humanResource.models.DTOs.request.RegistrationRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.RegistrationResponseDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.UserResponseDTO;
@@ -22,7 +23,7 @@ public class RegisterService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public RegistrationResponseDTO saveUser(RegistrationRequestDTO registrationDTO) {
+    public RegistrationResponseDTO saveUser(RegistrationRequestDTO registrationDTO) throws RegistrationException {
         if (registrationValidator.isRegistratioValid(registrationDTO)) {
             User user = new User();
             user.setEmail(registrationDTO.getEmail());
@@ -34,7 +35,7 @@ public class RegisterService {
             userDAO.saveAndFlush(user);
             return modelMapper.map(user, RegistrationResponseDTO.class);
         }
-        return null;
+        throw new RegistrationException("The inserted registartion's info re not valid", 400);
     }
 
 

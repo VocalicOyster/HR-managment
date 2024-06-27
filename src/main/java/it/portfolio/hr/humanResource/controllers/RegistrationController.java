@@ -1,5 +1,7 @@
 package it.portfolio.hr.humanResource.controllers;
 
+import it.portfolio.hr.humanResource.exceptions.user.UserException;
+import it.portfolio.hr.humanResource.exceptions.registration.RegistrationException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
@@ -25,41 +27,21 @@ public class RegistrationController {
 
     @PostMapping
     public ResponseEntity<Response> registerNewUser(@RequestBody RegistrationRequestDTO registrationRequestDTO) {
-        RegistrationResponseDTO registrationResponseDTO = registerService.saveUser(registrationRequestDTO);
-        if(registrationResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Error with data"
-                    )
-            );
+        try {
+            RegistrationResponseDTO registrationResponseDTO = registerService.saveUser(registrationRequestDTO);
+            return ResponseEntity.ok().body(new ResponseValid(200, "User registered with success", registrationResponseDTO));
+        } catch (RegistrationException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, "Error with data"));
         }
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "User registered with success",
-                        registrationResponseDTO
-                )
-        );
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Response> update(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
-        UserResponseDTO userResponseDTO = userService.updateUserById(id, userRequestDTO);
-        if(userResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Error with data"
-                    )
-            );
+        try {
+            UserResponseDTO userResponseDTO = userService.updateUserById(id, userRequestDTO);
+            return ResponseEntity.ok().body(new ResponseValid(200, "User registered with success", userResponseDTO));
+        } catch (UserException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "User registered with success",
-                        userResponseDTO
-                )
-        );
     }
 }

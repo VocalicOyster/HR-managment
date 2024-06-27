@@ -1,6 +1,8 @@
 package it.portfolio.hr.humanResource.controllers;
 
 import it.portfolio.hr.humanResource.entities.User;
+import it.portfolio.hr.humanResource.exceptions.user.UserException;
+import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
 import it.portfolio.hr.humanResource.models.DTOs.request.LoginRequest;
 import it.portfolio.hr.humanResource.models.DTOs.response.LoginResponse;
 import it.portfolio.hr.humanResource.models.UserDetailsImpl;
@@ -30,17 +32,15 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest) throws BadCredentialsException {
-        User user = userDetailsService.getUserByUsername(authenticationRequest.getUsername());
-        if (user != null && passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
-            final String jwt = jwtUtil.createToken(new UserDetailsImpl(user.getUsername(), user.getPassword(), user.getCompanyName()));
-            return ResponseEntity.ok().body(new LoginResponse(jwt, 200, "Token created successfully!"));
+        try {
+            User user = userDetailsService.getUserByUsername(authenticationRequest.getUsername());
+            if (user != null && passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
+                final String jwt = jwtUtil.createToken(new UserDetailsImpl(user.getUsername(), user.getPassword(), user.getCompanyName()));
+                return ResponseEntity.ok().body(new LoginResponse(jwt, 200, "Token created successfully!"));
+            }
+            return ResponseEntity.status(400).body(new LoginResponse(400, "The inserted password or username are invalid. Unable to create token"));
+        } catch (UserException e) {
+            return ResponseEntity.status(400).body(new LoginResponse(400, e.getMessage()));
         }
-
-        return ResponseEntity.status(400).body(
-                new LoginResponse(
-                        400,
-                        "Impossible to create token. Wrong credentials!"
-                )
-        );
     }
 }

@@ -1,7 +1,6 @@
 package it.portfolio.hr.humanResource.validator;
 
 import it.portfolio.hr.humanResource.entities.Employees;
-import it.portfolio.hr.humanResource.exceptions.employee.InvalidEmployeeException;
 import it.portfolio.hr.humanResource.models.DTOs.request.EmployeesRequestDTO;
 import it.portfolio.hr.humanResource.repositories.EmployeesRepository;
 import org.springframework.beans.factory.annotation.Autowired;

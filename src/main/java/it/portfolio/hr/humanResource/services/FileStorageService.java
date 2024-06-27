@@ -96,7 +96,7 @@ public class FileStorageService {
         return zipFile.getName();
     }
 
-    public void createZipFile(List<File> fileToAppend, File zipFile) throws IOException {
+    private void createZipFile(List<File> fileToAppend, File zipFile) throws IOException {
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile))) {
             for (File file : fileToAppend) {
                 try {
