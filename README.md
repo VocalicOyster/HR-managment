@@ -16,7 +16,7 @@ giorni di ferie, straordinari, caricare le buste paga per facilitare la gestione
 la gestione delle candidature con relativi candidati, candidature e programmazione di giorni e orari dei
 colloqui
 
-![general project structure](/images/project structure.png) 
+![general project structure](/images/project%20structure.png) 
 
 ![structure](/images/structure.png) 
 
