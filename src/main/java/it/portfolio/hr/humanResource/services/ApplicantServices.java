@@ -51,7 +51,6 @@ public class ApplicantServices {
 
     public ApplicantResponseDTO getById(Long id, String companyName) throws ApplicantException {
         Applicants applicants = applicantRepository.findById(id, companyName).orElseThrow(() ->  new ApplicantException("No applicant retrieved with id: " + id, 400));
-
         return modelMapper.map(applicants, ApplicantResponseDTO.class);
     }
 
@@ -73,7 +72,6 @@ public class ApplicantServices {
 
     public ApplicantResponseDTO deleteById(Long id, String companyName) throws ApplicantException {
         Applicants existingApplicant = applicantRepository.findById(id, companyName).orElseThrow(() -> new ApplicantException("No applicant retrieved with id: " + id, 400));
-
         existingApplicant.setDeleted(true);
         applicantRepository.saveAndFlush(existingApplicant);
         return modelMapper.map(existingApplicant, ApplicantResponseDTO.class);
