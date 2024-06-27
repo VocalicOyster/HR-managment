@@ -50,8 +50,8 @@ public class PaycheckController {
         }
     }
 
-    @GetMapping("/download/{id}/{month}")
-    public byte[] download(@PathVariable Long id, @PathVariable int month, HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/download/{id}/{month}/{year}")
+    public byte[] download(@PathVariable Long id, @PathVariable int month, @PathVariable String year, HttpServletRequest request, HttpServletResponse response) {
         String companyName = (String) request.getAttribute("companyName");
         try {
             Employees employees = employeesRepository.findById(id, companyName).orElse(null);
@@ -60,7 +60,7 @@ public class PaycheckController {
                 return null;
             }
             String m = Month.of(month).toString().toUpperCase();
-            String fileName = employees.getName() + m + String.valueOf(LocalDate.now().getYear()) + ".pdf";
+            String fileName = employees.getName() + m + year + ".pdf";
 
             response.setContentType(MediaType.APPLICATION_PDF_VALUE);
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");

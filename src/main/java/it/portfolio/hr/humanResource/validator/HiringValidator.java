@@ -1,14 +1,9 @@
 package it.portfolio.hr.humanResource.validator;
 
 import it.portfolio.hr.humanResource.entities.Hiring;
-import it.portfolio.hr.humanResource.exceptions.hirirng.DepartmentAlreadyExistException;
-import it.portfolio.hr.humanResource.exceptions.hirirng.InvalidDateException;
-import it.portfolio.hr.humanResource.exceptions.hirirng.InvalidIbanException;
-import it.portfolio.hr.humanResource.exceptions.hirirng.HiringNullException;
 import it.portfolio.hr.humanResource.models.DTOs.request.HiringRequestDTO;
 import it.portfolio.hr.humanResource.repositories.DepartmentRepository;
 import it.portfolio.hr.humanResource.repositories.HiringRepository;
-import it.portfolio.hr.humanResource.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

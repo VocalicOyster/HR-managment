@@ -4,12 +4,15 @@ package it.portfolio.hr.humanResource.services;
 import it.portfolio.hr.humanResource.entities.Employees;
 import it.portfolio.hr.humanResource.entities.Overtime;
 import it.portfolio.hr.humanResource.entities.Permits;
+import it.portfolio.hr.humanResource.exceptions.employee.EmployeesException;
+import it.portfolio.hr.humanResource.exceptions.permits.PermitsException;
 import it.portfolio.hr.humanResource.models.DTOs.request.PermitsRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.OvertimeResponseDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.PermitsResponseDTO;
 import it.portfolio.hr.humanResource.repositories.EmployeesRepository;
 import it.portfolio.hr.humanResource.repositories.PermitsRepository;
 import it.portfolio.hr.humanResource.validator.PermitsValidator;
+import jakarta.persistence.PersistenceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,20 +32,17 @@ public class PermitsService {
     @Autowired
     private EmployeesRepository employeesRepository;
 
-    public PermitsResponseDTO create(PermitsRequestDTO permitsRequestDTO, String companyName) {
+    public PermitsResponseDTO create(PermitsRequestDTO permitsRequestDTO, String companyName) throws PermitsException, EmployeesException {
         if(permitsValidator.isPermitsValid(permitsRequestDTO) ) {
             Permits permits = modelMapper.map(permitsRequestDTO, Permits.class);
             permits.setCompanyName(companyName);
             permits.setDeleted(false);
-            Employees employees = employeesRepository.findById(permitsRequestDTO.getEmployees_id(), companyName).orElse(null);
-            if(employees == null) {
-                return null;
-            }
+            Employees employees = employeesRepository.findById(permitsRequestDTO.getEmployees_id(), companyName).orElseThrow(() -> new EmployeesException("No employees retrieved with id: " + permitsRequestDTO.getEmployees_id() , 400));
             permits.setEmployees(employees);
             permitsRepository.saveAndFlush(permits);
             return modelMapper.map(permits, PermitsResponseDTO.class);
         }
-        return null;
+        throw new PermitsException("The inserted permits' info are not valid", 400);
     }
 
     public List<PermitsResponseDTO> getAll(String companyName) {
@@ -58,13 +58,8 @@ public class PermitsService {
         return permitsResponseList;
     }
 
-    public PermitsResponseDTO getById(Long id, String companyName) {
-        Permits permits = permitsRepository.findById(id, companyName).orElse(null);
-
-        if(permits == null) {
-            return null;
-        }
-
+    public PermitsResponseDTO getById(Long id, String companyName) throws PermitsException {
+        Permits permits = permitsRepository.findById(id, companyName).orElseThrow(() -> new PermitsException("No permits retrieved with id: " + id, 400));
         return modelMapper.map(permits, PermitsResponseDTO.class);
     }
 
@@ -78,31 +73,17 @@ public class PermitsService {
         return permitsResponseDTOList;
     }
 
-    public PermitsResponseDTO update(Long id, PermitsRequestDTO permitsRequestDTO, String companyName) {
-        Permits permits = permitsRepository.findById(id, companyName).orElse(null);
-
-        if(permits == null) {
-            return null;
-        }
-
+    public PermitsResponseDTO update(Long id, PermitsRequestDTO permitsRequestDTO, String companyName) throws PermitsException, EmployeesException {
+        Permits permits = permitsRepository.findById(id, companyName).orElseThrow(() -> new PermitsException("No permits retrieved with id: " + id, 400));
         permits.setHours(permitsRequestDTO.getHours());
-        Employees employees = employeesRepository.findById(permitsRequestDTO.getEmployees_id(), companyName).orElse(null);
-        if(employees == null) {
-            return null;
-        }
+        Employees employees = employeesRepository.findById(permitsRequestDTO.getEmployees_id(), companyName).orElseThrow(() -> new EmployeesException("No employees retrieved with id: " + permitsRequestDTO.getEmployees_id() , 400));
         permits.setEmployees(employees);
         permitsRepository.saveAndFlush(permits);
-
         return modelMapper.map(permits, PermitsResponseDTO.class);
     }
 
-    public PermitsResponseDTO delete(Long id, String companyName) {
-        Permits permits = permitsRepository.findById(id, companyName).orElse(null);
-        if(permits == null) {
-            return null;
-        }
-
-        //permitsRepository.delete(permits);
+    public PermitsResponseDTO delete(Long id, String companyName) throws PermitsException {
+        Permits permits = permitsRepository.findById(id, companyName).orElseThrow(() -> new PermitsException("No permits retrieved with id: " + id, 400));
         permits.setDeleted(true);
         permitsRepository.saveAndFlush(permits);
         PermitsResponseDTO permitsResponseDTO = modelMapper.map(permits, PermitsResponseDTO.class);

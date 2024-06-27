@@ -2,6 +2,7 @@ package it.portfolio.hr.humanResource.services;
 
 import it.portfolio.hr.humanResource.entities.Applicants;
 import it.portfolio.hr.humanResource.entities.CandidateEvaluations;
+import it.portfolio.hr.humanResource.exceptions.applicant.ApplicantException;
 import it.portfolio.hr.humanResource.exceptions.candidateEv.CandidateEvaluationException;
 import it.portfolio.hr.humanResource.models.DTOs.request.CandidateEvaluationRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.CandidatesEvaluationResponseDTO;
@@ -28,13 +29,11 @@ public class CandidateEvaluationService {
     @Autowired
     private ApplicantRepository applicantRepository;
 
-    public CandidatesEvaluationResponseDTO createCandidateEv(CandidateEvaluationRequestDTO candidateEvaluationRequestDTO, String companyName) {
-            if(candidateValidator.isCandidateEvaluationValid(candidateEvaluationRequestDTO, companyName)) {
+    public CandidatesEvaluationResponseDTO createCandidateEv(CandidateEvaluationRequestDTO candidateEvaluationRequestDTO, String companyName) throws CandidateEvaluationException, ApplicantException {
+        if (candidateValidator.isCandidateEvaluationValid(candidateEvaluationRequestDTO, companyName)) {
             CandidateEvaluations candidate = modelMapper.map(candidateEvaluationRequestDTO, CandidateEvaluations.class);
-            Applicants applicants = applicantRepository.findById(candidateEvaluationRequestDTO.getApplicants_id(), companyName).orElse(null);
-            if(applicants == null) {
-                return null;
-            }
+            Applicants applicants = applicantRepository.findById(candidateEvaluationRequestDTO.getApplicants_id(), companyName).orElseThrow(() -> new ApplicantException("Unable to retrieve the indicated applicant", 400));
+
             candidate.setApplicants(applicants);
             candidate.setDescription(candidateEvaluationRequestDTO.getDescription());
             candidate.setCompanyName(companyName);
@@ -42,7 +41,7 @@ public class CandidateEvaluationService {
             candidateRepository.saveAndFlush(candidate);
             return modelMapper.map(candidate, CandidatesEvaluationResponseDTO.class);
         }
-            return null;
+        throw new CandidateEvaluationException("The inserted candidate evaluation is not valid", 400);
     }
 
     public List<CandidatesEvaluationResponseDTO> getAllCanEv(String companyName) {
@@ -58,46 +57,38 @@ public class CandidateEvaluationService {
         return candidates;
     }
 
-    public CandidatesEvaluationResponseDTO getById(Long id, String companyName) {
-        CandidateEvaluations candidate = candidateRepository.findById(id, companyName).orElse(null);
-        if (candidate != null) {
-            CandidatesEvaluationResponseDTO candidateDTO = modelMapper.map(candidate, CandidatesEvaluationResponseDTO.class);
-            candidateDTO.setApplicants(candidateDTO.getApplicants());
-            return candidateDTO;
-        }
-        return null;
+    public CandidatesEvaluationResponseDTO getById(Long id, String companyName) throws CandidateEvaluationException {
+        CandidateEvaluations candidate = candidateRepository.findById(id, companyName).orElseThrow(() -> new CandidateEvaluationException("No candidate evaluation retrieved with id: " + id, 400));
+        CandidatesEvaluationResponseDTO candidateDTO = modelMapper.map(candidate, CandidatesEvaluationResponseDTO.class);
+        candidateDTO.setApplicants(candidateDTO.getApplicants());
+        return candidateDTO;
+
     }
 
-    public CandidatesEvaluationResponseDTO updateCandidate(Long id, CandidateEvaluationRequestDTO candidateEvaluationRequestDTO, String companyName) {
-        CandidateEvaluations candidate = candidateRepository.findById(id, companyName).orElse(null);
+    public CandidatesEvaluationResponseDTO updateCandidate(Long id, CandidateEvaluationRequestDTO candidateEvaluationRequestDTO, String companyName) throws CandidateEvaluationException {
+        CandidateEvaluations candidate = candidateRepository.findById(id, companyName).orElseThrow(() -> new CandidateEvaluationException("No candidate evaluation retrieved with id: " + id, 400));
 
-        if (candidate != null) {
-            Long idApp = candidate.getApplicants().getId();
-            Applicants applicants = applicantRepository.findById(idApp, companyName).orElse(null);
-            CandidateEvaluations candidateEvaluations = modelMapper.map(candidateEvaluationRequestDTO, CandidateEvaluations.class);
-            candidate.setApplicants(applicants);
-            candidate.setId(candidate.getId());
-            candidate.setDescription(candidateEvaluations.getDescription());
-            candidate.setPossibilityOfApplication(candidateEvaluations.getPossibilityOfApplication());
-            candidateRepository.saveAndFlush(candidate);
+        Long idApp = candidate.getApplicants().getId();
+        Applicants applicants = applicantRepository.findById(idApp, companyName).orElse(null);
+        CandidateEvaluations candidateEvaluations = modelMapper.map(candidateEvaluationRequestDTO, CandidateEvaluations.class);
+        candidate.setApplicants(applicants);
+        candidate.setId(candidate.getId());
+        candidate.setDescription(candidateEvaluations.getDescription());
+        candidate.setPossibilityOfApplication(candidateEvaluations.getPossibilityOfApplication());
+        candidateRepository.saveAndFlush(candidate);
 
-            return modelMapper.map(candidate, CandidatesEvaluationResponseDTO.class);
-        }
-        return null;
+        return modelMapper.map(candidate, CandidatesEvaluationResponseDTO.class);
+
     }
 
-    public CandidatesEvaluationResponseDTO deleteById(Long id, String companyName) {
-        CandidateEvaluations candidateEvaluations = candidateRepository.findById(id, companyName).orElse(null);
+    public CandidatesEvaluationResponseDTO deleteById(Long id, String companyName) throws CandidateEvaluationException {
+        CandidateEvaluations candidateEvaluations = candidateRepository.findById(id, companyName).orElseThrow(() -> new CandidateEvaluationException("No candidate evaluation retrieved with id: " + id, 400));
 
-        if (candidateEvaluations != null) {
-            //candidateRepository.deleteById(id);
-            Long idApp = candidateEvaluations.getApplicants().getId();
-            Applicants applicants = applicantRepository.findById(idApp, companyName).orElse(null);
-            candidateEvaluations.setApplicants(applicants);
-            candidateEvaluations.setDeleted(true);
-            candidateRepository.saveAndFlush(candidateEvaluations);
-            return modelMapper.map(candidateEvaluations, CandidatesEvaluationResponseDTO.class);
-        }
-        return null;
+        Long idApp = candidateEvaluations.getApplicants().getId();
+        Applicants applicants = applicantRepository.findById(idApp, companyName).orElse(null);
+        candidateEvaluations.setApplicants(applicants);
+        candidateEvaluations.setDeleted(true);
+        candidateRepository.saveAndFlush(candidateEvaluations);
+        return modelMapper.map(candidateEvaluations, CandidatesEvaluationResponseDTO.class);
     }
 }

@@ -1,13 +1,11 @@
 package it.portfolio.hr.humanResource.services;
 
 import it.portfolio.hr.humanResource.entities.Applicants;
-import it.portfolio.hr.humanResource.exceptions.applicant.BadApplicantCredentialsException;
-import it.portfolio.hr.humanResource.exceptions.applicant.NoApplicantException;
+import it.portfolio.hr.humanResource.exceptions.applicant.ApplicantException;
 import it.portfolio.hr.humanResource.models.DTOs.request.ApplicantRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.ApplicantResponseDTO;
 import it.portfolio.hr.humanResource.repositories.ApplicantRepository;
 import it.portfolio.hr.humanResource.validator.ApplicantValidator;
-import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,7 @@ public class ApplicantServices {
     @Autowired
     private ApplicantValidator applicantValidator;
 
-    public ApplicantResponseDTO createNewApplicant(ApplicantRequestDTO applicantRequestDTO, String companyName) {
+    public ApplicantResponseDTO createNewApplicant(ApplicantRequestDTO applicantRequestDTO, String companyName) throws ApplicantException {
         if (applicantValidator.isApplicantValid(applicantRequestDTO, companyName)) {
             Applicants newApplicant = modelMapper.map(applicantRequestDTO, Applicants.class);
             newApplicant.setCompanyName(companyName);
@@ -36,7 +34,7 @@ public class ApplicantServices {
             applicantRepository.saveAndFlush(newApplicant);
             return modelMapper.map(newApplicant, ApplicantResponseDTO.class);
         }
-        return null;
+        throw new ApplicantException("Inserted applicant is not valid", 400);
     }
 
     public List<ApplicantResponseDTO> getAllApplicant(String companyName) {
@@ -51,22 +49,15 @@ public class ApplicantServices {
         return applicantResponseDTOList;
     }
 
-    public ApplicantResponseDTO getById(Long id, String companyName) {
-        Optional<Applicants> applicants = applicantRepository.findById(id, companyName);
+    public ApplicantResponseDTO getById(Long id, String companyName) throws ApplicantException {
+        Applicants applicants = applicantRepository.findById(id, companyName).orElseThrow(() ->  new ApplicantException("No applicant retrieved with id: " + id, 400));
 
-        if (applicants.isPresent()) {
-            return modelMapper.map(applicants, ApplicantResponseDTO.class);
-        }
-        return null;
+        return modelMapper.map(applicants, ApplicantResponseDTO.class);
     }
 
-    public ApplicantResponseDTO updateById(Long id, ApplicantRequestDTO applicantRequestDTO, String companyName)  {
+    public ApplicantResponseDTO updateById(Long id, ApplicantRequestDTO applicantRequestDTO, String companyName) throws ApplicantException {
         if(applicantValidator.isApplicantValid(applicantRequestDTO, companyName)) {
-            Applicants existingApplicant = applicantRepository.findById(id, companyName).orElse(null);
-
-            if (existingApplicant == null) {
-                return null;
-            }
+            Applicants existingApplicant = applicantRepository.findById(id, companyName).orElseThrow(() -> new ApplicantException("No applicant retrieved with id: " + id, 400));
 
             existingApplicant.setName(applicantRequestDTO.getName());
             existingApplicant.setFiscalCode(applicantRequestDTO.getFiscalCode());
@@ -77,17 +68,12 @@ public class ApplicantServices {
             response.setId(existingApplicant.getId());
             return response;
         }
-        return null;
+        throw new ApplicantException("Inserted applicant is not valid", 400);
     }
 
-    public ApplicantResponseDTO deleteById(Long id, String companyName){
-        Applicants existingApplicant = applicantRepository.findById(id, companyName).orElse(null);
+    public ApplicantResponseDTO deleteById(Long id, String companyName) throws ApplicantException {
+        Applicants existingApplicant = applicantRepository.findById(id, companyName).orElseThrow(() -> new ApplicantException("No applicant retrieved with id: " + id, 400));
 
-        if (existingApplicant == null) {
-            return null;
-        }
-
-        //applicantRepository.deleteById(id);
         existingApplicant.setDeleted(true);
         applicantRepository.saveAndFlush(existingApplicant);
         return modelMapper.map(existingApplicant, ApplicantResponseDTO.class);

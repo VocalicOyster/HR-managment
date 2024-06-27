@@ -2,6 +2,7 @@ package it.portfolio.hr.humanResource.services;
 
 import it.portfolio.hr.humanResource.entities.Department;
 import it.portfolio.hr.humanResource.entities.Hiring;
+import it.portfolio.hr.humanResource.exceptions.department.DepartmentException;
 import it.portfolio.hr.humanResource.exceptions.hirirng.*;
 import it.portfolio.hr.humanResource.models.DTOs.request.HiringRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.HiringResponseDTO;
@@ -28,26 +29,24 @@ public class HiringService {
     private DepartmentRepository departmentRepository;
     @Autowired
     private HiringValidator hiringValidator;
-    public HiringResponseDTO createHiring(HiringRequestDTO hiringRequestDTO, String companyName)  {
-            if(hiringValidator.isHiringValid(hiringRequestDTO, companyName)) {
-                Hiring hiring = modelMapper.map(hiringRequestDTO, Hiring.class);
-                Department department = departmentRepository.findById(hiringRequestDTO.getDepartment_id(), companyName).orElse(null);
-                if (department == null) {
-                    return null;
-                }
-                hiring.setDepartment(department);
-                hiring.setCompanyName(companyName);
-                hiringRepository.saveAndFlush(hiring);
-                return modelMapper.map(hiring, HiringResponseDTO.class);
-            }
-        return null;
+
+    public HiringResponseDTO createHiring(HiringRequestDTO hiringRequestDTO, String companyName) throws DepartmentException, HiringException {
+        if (hiringValidator.isHiringValid(hiringRequestDTO, companyName)) {
+            Hiring hiring = modelMapper.map(hiringRequestDTO, Hiring.class);
+            Department department = departmentRepository.findById(hiringRequestDTO.getDepartment_id(), companyName).orElseThrow(() -> new DepartmentException("No department retrieved with id: " + hiring.getDepartment().getId(), 400));
+            hiring.setDepartment(department);
+            hiring.setCompanyName(companyName);
+            hiringRepository.saveAndFlush(hiring);
+            return modelMapper.map(hiring, HiringResponseDTO.class);
+        }
+        throw new HiringException("The inserted hiring's information are not valid", 400);
     }
 
     public List<HiringResponseDTO> getAll(String companyName) {
         List<Hiring> hiringList = hiringRepository.findAll(companyName);
         List<HiringResponseDTO> hiringResponseDTOList = new ArrayList<>();
 
-        for(Hiring hiring : hiringList) {
+        for (Hiring hiring : hiringList) {
             HiringResponseDTO hiringResponseDTO = modelMapper.map(hiring, HiringResponseDTO.class);
             hiringResponseDTOList.add(hiringResponseDTO);
         }
@@ -55,24 +54,15 @@ public class HiringService {
         return hiringResponseDTOList;
     }
 
-    public HiringResponseDTO getById(Long id, String companyName) {
-        Hiring hiring = hiringRepository.findById(id, companyName).orElse(null);
-        if(hiring != null) {
-            return modelMapper.map(hiring, HiringResponseDTO.class);
-        }
-        return null;
+    public HiringResponseDTO getById(Long id, String companyName) throws HiringException {
+        Hiring hiring = hiringRepository.findById(id, companyName).orElseThrow(() -> new HiringException("No hiring retrieved with id: " + id, 400));
+        return modelMapper.map(hiring, HiringResponseDTO.class);
     }
 
-    public HiringResponseDTO updateById(Long id, HiringRequestDTO hiringRequestDTO, String companyName) {
-        Hiring hiring = hiringRepository.findById(id, companyName).orElse(null);
-        if(hiring == null) {
-            return null;
-        }
+    public HiringResponseDTO updateById(Long id, HiringRequestDTO hiringRequestDTO, String companyName) throws HiringException, DepartmentException {
+        Hiring hiring = hiringRepository.findById(id, companyName).orElseThrow(() ->  new HiringException("No hiring retrieved with id: " + id, 400));
+        Department department = departmentRepository.findById(hiringRequestDTO.getDepartment_id()).orElseThrow(() -> new DepartmentException("No department retrieved with id: " + hiring.getDepartment().getId(), 400));
 
-        Department department = departmentRepository.findById(hiringRequestDTO.getDepartment_id()).orElse(null);
-        if(department == null) {
-            return null;
-        }
         hiring.setDepartment(department);
         hiring.setHiringDate(hiringRequestDTO.getHiringDate());
         hiring.setRole(hiringRequestDTO.getRole());
@@ -83,11 +73,9 @@ public class HiringService {
         return modelMapper.map(hiring, HiringResponseDTO.class);
     }
 
-    public HiringResponseDTO deleteById(Long id, String companyName) {
-        Hiring hiring = hiringRepository.findById(id, companyName).orElse(null);
-        if(hiring == null) {
-            return null;
-        }
+    public HiringResponseDTO deleteById(Long id, String companyName) throws HiringException {
+        Hiring hiring = hiringRepository.findById(id, companyName).orElseThrow(() -> new HiringException("No hiring retrieved with id: " + id, 400));
+
         //hiringRepository.deleteById(id);
         hiring.setDeleted(true);
         hiringRepository.saveAndFlush(hiring);

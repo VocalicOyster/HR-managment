@@ -1,7 +1,7 @@
 package it.portfolio.hr.humanResource.controllers;
 
-import it.portfolio.hr.humanResource.exceptions.employee.HiringNotFoundException;
-import it.portfolio.hr.humanResource.exceptions.employee.InvalidEmployeeException;
+import it.portfolio.hr.humanResource.exceptions.employee.EmployeesException;
+import it.portfolio.hr.humanResource.exceptions.hirirng.HiringException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
@@ -27,19 +27,12 @@ public class EmployeeController {
     @PostMapping("/")
     public ResponseEntity<Response> createEmployee(@RequestBody EmployeesRequestDTO employees, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        EmployeesResponseDTO response = employeeService.createEmployee(employees, companyName);
-        if(response == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(400,
-                            "Unable to create due to data error"
-                    )
-            );
+        try {
+            EmployeesResponseDTO response = employeeService.createEmployee(employees, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Employee created correctly", response));
+        } catch (HiringException | EmployeesException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-        return ResponseEntity.ok().body(
-                new ResponseValid(200,
-                        "Employee created correctly",
-                        response)
-        );
     }
 
     @GetMapping("/list")
@@ -47,133 +40,66 @@ public class EmployeeController {
         String companyName = (String) request.getAttribute("companyName");
         List<EmployeesResponseDTO> responseDTOList = employeeService.getAllEmployees(companyName);
         if (responseDTOList.isEmpty()) {
-            return ResponseEntity.status(200).body(
-                    new ResponseValidNoData(
-                            200,
-                            "No data retrieved from database"
-                    )
-            );
+            return ResponseEntity.status(200).body(new ResponseValidNoData(200, "No data retrieved from database"));
         }
 
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Data retrieved correctly from database",
-                        responseDTOList
-                )
-        );
+        return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly from database", responseDTOList));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getById(@PathVariable Long id, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        EmployeesResponseDTO employees = employeeService.getById(id, companyName);
-        if (employees == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Invalid ID"
-                    )
-            );
+        try {
+            EmployeesResponseDTO employees = employeeService.getById(id, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly from database", employees));
+        } catch (EmployeesException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                       200,
-                        "Data retrieved correctly from database",
-                        employees
-                )
-        );
     }
 
     @GetMapping
     public ResponseEntity<Response> getByFiscalCode(@RequestParam String fiscalCode, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        EmployeesResponseDTO employees = employeeService.getByFiscalCode(fiscalCode, companyName);
-        if (employees == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Invalid Fiscal Code"
-                    )
-            );
+        try {
+            EmployeesResponseDTO employees = employeeService.getByFiscalCode(fiscalCode, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly from database", employees));
+        } catch (EmployeesException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Data retrieved correctly from database",
-                        employees
-                )
-        );
     }
 
 
     @GetMapping("/situation/{name}")
-    public ResponseEntity<Response> getSituationByName(@PathVariable String name,HttpServletRequest request) {
+    public ResponseEntity<Response> getSituationByName(@PathVariable String name, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        SituationResponseDTO situationResponseDTO = employeeService.getSituationByName(name, companyName);
-
-        if(situationResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Employees name in not in database"
-                    )
-            );
+        try {
+            SituationResponseDTO situationResponseDTO = employeeService.getSituationByName(name, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly fro employee: " + name, situationResponseDTO));
+        } catch (EmployeesException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Data retrieved correctly fro employee: " + name,
-                        situationResponseDTO
-                )
-        );
-
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateById(@PathVariable Long id, @RequestBody EmployeesRequestDTO employeesRequestDTO, HttpServletRequest request)  {
+    public ResponseEntity<Response> updateById(@PathVariable Long id, @RequestBody EmployeesRequestDTO employeesRequestDTO, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        EmployeesResponseDTO employeesResponseDTO = employeeService.updateById(id, employeesRequestDTO, companyName);
-        if (employeesResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Invalid Fiscal Code"
-                    )
-            );
+        try {
+            EmployeesResponseDTO employeesResponseDTO = employeeService.updateById(id, employeesRequestDTO, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Data updated correctly", employeesResponseDTO));
+        } catch (HiringException | EmployeesException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Data updated correctly",
-                        employeesResponseDTO
-                )
-        );
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteById(@PathVariable Long id, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
-        EmployeesResponseDTO response = employeeService.deleteById(id, companyName);
-        if (response == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "Invalid Id"
-                    )
-            );
+        try {
+            EmployeesResponseDTO response = employeeService.deleteById(id, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Data deleted correctly", response));
+        } catch (EmployeesException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Data deleted correctly",
-                        response
-                )
-        );
     }
 }

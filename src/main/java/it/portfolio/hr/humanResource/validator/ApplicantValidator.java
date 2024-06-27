@@ -1,7 +1,6 @@
 package it.portfolio.hr.humanResource.validator;
 
 import it.portfolio.hr.humanResource.entities.Applicants;
-import it.portfolio.hr.humanResource.exceptions.applicant.BadApplicantCredentialsException;
 import it.portfolio.hr.humanResource.models.DTOs.request.ApplicantRequestDTO;
 import it.portfolio.hr.humanResource.repositories.ApplicantRepository;
 import org.springframework.beans.factory.annotation.Autowired;

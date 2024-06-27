@@ -1,5 +1,7 @@
 package it.portfolio.hr.humanResource.controllers;
 
+import it.portfolio.hr.humanResource.exceptions.interviews.InterviewException;
+import it.portfolio.hr.humanResource.exceptions.applicant.ApplicantException;
 import it.portfolio.hr.humanResource.models.DTOs.Response;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseInvalid;
 import it.portfolio.hr.humanResource.models.DTOs.ResponseValid;
@@ -23,112 +25,55 @@ public class InterviewController {
 
     @PostMapping("/")
     public ResponseEntity<Response> createInterview(@RequestBody InterviewRequestDTO interviewRequestDTO, HttpServletRequest request) {
-        String companyName = (String)request.getAttribute("companyName");
-        InterviewResponseDTO interviewResponseDTO = interviewService.createInterview(interviewRequestDTO, companyName);
-        if(interviewResponseDTO != null) {
-            return ResponseEntity.ok().body(
-                    new ResponseValid(
-                            200,
-                            "Intirview created succefully",
-                            interviewResponseDTO
-                    )
-            );
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            InterviewResponseDTO interviewResponseDTO = interviewService.createInterview(interviewRequestDTO, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Interview created successfully", interviewResponseDTO));
+        } catch (ApplicantException | InterviewException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.status(400).body(
-                new ResponseInvalid(
-                        400,
-                        "Impossible to create a new interview"
-                )
-        );
     }
 
     @GetMapping("/list")
     public ResponseEntity<Response> getAllInterview(HttpServletRequest request) {
-        String companyName = (String)request.getAttribute("companyName");
+        String companyName = (String) request.getAttribute("companyName");
         List<InterviewResponseDTO> interview = interviewService.getAllInterview(companyName);
-        if(interview.isEmpty()) {
-            return ResponseEntity.status(200).body(
-                    new ResponseValid(
-                            200,
-                            "No intirview retreived from database",
-                            interview
-                    )
-            );
+        if (interview.isEmpty()) {
+            return ResponseEntity.status(200).body(new ResponseValid(200, "No interview retrieved from database", interview));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Interviews retreived correctly from database",
-                        interview
-                )
-        );
+        return ResponseEntity.ok().body(new ResponseValid(200, "Interviews retrieved correctly from database", interview));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getById(@PathVariable Long id, HttpServletRequest request) {
-        String companyName = (String)request.getAttribute("companyName");
-        InterviewResponseDTO interview = interviewService.getById(id, companyName);
-        if(interview == null) {
-            return ResponseEntity.status(200).body(
-                    new ResponseValidNoData(
-                            200,
-                            "No intirview retreived from database"
-                    )
-            );
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            InterviewResponseDTO interview = interviewService.getById(id, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Interviews retrieved correctly from database", interview));
+        } catch (InterviewException e) {
+            return ResponseEntity.status(400).body(new ResponseValidNoData(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Interviews retreived correctly from database",
-                        interview
-                )
-        );
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateById(@PathVariable Long id, @RequestBody InterviewRequestDTO interviewRequestDTO, HttpServletRequest request) {
-        String companyName = (String)request.getAttribute("companyName");
-        InterviewResponseDTO interviewResponseDTO = interviewService.updateById(id, interviewRequestDTO, companyName);
-        if(interviewResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "An error accurred with data"
-                    )
-            );
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            InterviewResponseDTO interviewResponseDTO = interviewService.updateById(id, interviewRequestDTO, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Interviews updated correctly", interviewResponseDTO));
+        } catch (InterviewException | ApplicantException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Interviews updated correctly",
-                        interviewResponseDTO
-                )
-        );
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteById(@PathVariable Long id, HttpServletRequest request) {
-        String companyName = (String)request.getAttribute("companyName");
-        InterviewResponseDTO interviewResponseDTO = interviewService.deleteById(id, companyName);
-        if(interviewResponseDTO == null) {
-            return ResponseEntity.status(400).body(
-                    new ResponseInvalid(
-                            400,
-                            "An error accurred with data"
-                    )
-            );
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            InterviewResponseDTO interviewResponseDTO = interviewService.deleteById(id, companyName);
+            return ResponseEntity.ok().body(new ResponseValid(200, "Interviews deleted correctly", interviewResponseDTO));
+        } catch (InterviewException e) {
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
-
-        return ResponseEntity.ok().body(
-                new ResponseValid(
-                        200,
-                        "Interviews deleted correctly",
-                        interviewResponseDTO
-                )
-        );
     }
 }
