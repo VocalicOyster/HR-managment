@@ -1,6 +1,9 @@
 # HR Managment per aziende
 
-## indice
+![s](/images/Designer.png)
+<img src="/images/Designer.png" width="807" height="850" alt="a">
+
+# indice
 - [Breve introduzione](#introduzione)
 - [Documentazione](#documentazione)
 - [Spiegazione dettagliata](#spiegazione-dettagliata)
