@@ -30,7 +30,7 @@ colloqui
 Per il completo avvio dell'applicazione non serve altro che:
 
 - Avere installato una JDK (ver. 21 o superiore) 
-- Avere installato Sql (Consiglio XAMPP) con un database rinominato "human_resources"
+- Avere installato Sql (Consigliato: XAMPP) con un database rinominato "human_resources"
 #### Al momento gira in localhost:8080
 [Installazione java](https://www.java.com/it/download/manual.jsp)
 
