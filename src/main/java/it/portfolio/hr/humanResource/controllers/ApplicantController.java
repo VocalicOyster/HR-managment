@@ -53,10 +53,9 @@ public class ApplicantController {
         String companyName = (String) request.getAttribute("companyName");
         try {
             ApplicantResponseDTO applicantResponseDTO = applicantServices.getById(id, companyName);
-
             return ResponseEntity.status(200).body(new ResponseValid(200, "Data retrieved correctly", applicantResponseDTO));
         } catch (ApplicantException e) {
-            return ResponseEntity.status(400).body(new ResponseValidNoData(400, e.getMessage()));
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
     }
 
@@ -78,10 +77,9 @@ public class ApplicantController {
         String companyName = (String) request.getAttribute("companyName");
         try {
             ApplicantResponseDTO applicantResponseDTO = applicantServices.deleteById(id, companyName);
-
             return ResponseEntity.ok().body(new ResponseValid(200, "Applicant deleted correctly", applicantResponseDTO));
         } catch (ApplicantException e) {
-            return ResponseEntity.status(400).body(new ResponseValidNoData(400, e.getMessage()));
+            return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }
 
     }

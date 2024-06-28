@@ -35,6 +35,7 @@ public class SecurityConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
@@ -46,8 +47,6 @@ public class SecurityConfigurer {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 );
-
-
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
