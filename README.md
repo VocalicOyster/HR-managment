@@ -1,7 +1,7 @@
-# HR Managment per aziende
+# HR Management per aziende
 
 
-<img src="/images/Designer.png" width="250" height="250" style="border-radius: 10px;" alt="a">
+<img src="/images/Designer.png" width="250" height="250" style="border-radius: 2px;" alt="a">
 
 # indice
 - [Breve introduzione](#introduzione)
@@ -50,11 +50,12 @@ più info su SpringDoc [qui](https://springdoc.org/)
 
 # Spiegazione dettagliata
 Come già anticipato nell'introduzione, quest'applicazione è rivolta alle aziende, 
-per la gestione delle loro risorse umane. Principalmente si occupa di gestire
+per la gestione delle loro risorse umane. Principalmente si occupa di gestire:
 
 - Dipendenti e relativi: assunzioni, dipartimento di assunzione, permessi, straordinari, giorni di malattia e giorni di ferie 
 - Annunci di lavoro con relativi: candidati e relativa valutazione, colloqui per dipartimenti
 
+#### Da notare il fatto che sarà possibile la registrazione di più aziende
 Le entità utilizzate sono: 
 
 - Applicants: rappresentano i candidati ad un annuncio di lavoro 
@@ -66,5 +67,16 @@ Le entità utilizzate sono:
 - Job announcement: inutile spiegare
 - Overtime, Permits, SickDays e Vacation: straordinari, permessi, giorni di malattia e di ferie di un dipendente
 - User: rappresenta l'azienda utilizzante
+
+
+È presente anche una funzione di seeding, che permette il riempimento iniziale del database con dei valori preimpostati,
+avendo così la possibilità di eseguire dei test iniziali
+
+
+# Stack tecnologico
+
+Per lo sviluppo di quest'applicazione sono state usate tecnologie varie. Abbiamo:
+
+- ![Spring Boot](/images/icons8-spring-boot-48.png)
 
 
