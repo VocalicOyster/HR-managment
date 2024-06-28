@@ -54,5 +54,14 @@ per la gestione delle loro risorse umane. Principalmente si occupa di gestire
 
 Le entità utilizzate sono: 
 
-- Applicants: rappresentano i candidati ad un annuncio di lavoro
+- Applicants: rappresentano i candidati ad un annuncio di lavoro 
+- CandidateEvaluations: rappresenta la valutazione dei candidati
+- Department: rappresenta un dipartimento dell'azienda 
+- Employees: inutile spiegare
+- Hiring: rappresenta i dettagli di assunzione di un dipendente
+- Interview: rappresenta il colloquio (futuro) di un candidato
+- Job announcement: inutile spiegare
+- Overtime, Permits, SickDays e Vacation: straordinari, permessi, giorni di malattia e di ferie di un dipendente
+- User: rappresenta l'azienda utilizzante
+
 
