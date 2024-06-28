@@ -5,7 +5,7 @@
 </a>
 
 
-# indice
+# Indice
 - [Breve introduzione](#introduzione)
 - [Documentazione](#documentazione)
 - [Spiegazione dettagliata](#spiegazione-dettagliata)
