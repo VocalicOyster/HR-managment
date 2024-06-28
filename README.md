@@ -77,6 +77,9 @@ avendo così la possibilità di eseguire dei test iniziali
 
 Per lo sviluppo di quest'applicazione sono state usate tecnologie varie. Abbiamo:
 
-- <img src="images/icons8-spring-boot-48.png" width="48" height="48" alt="SpringBoot">
+- ![SpringBoot](/images/icons8-spring-boot-48.png) *Springboot*
 
-
+<figure>
+    <img src="/images/icons8-spring-boot-48.png" alt="SpringBoot" />
+    <figcaption>SpringBoot</figcaption>
+</figure>
