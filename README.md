@@ -67,6 +67,7 @@ Le entità utilizzate sono:
 - Overtime, Permits, SickDays e Vacation: straordinari, permessi, giorni di malattia e di ferie di un dipendente
 - User: rappresenta l'azienda utilizzante
 
-- <i class="fab fa-github-square"></i>
+
+ <i class="fab fa-github-square"></i>
 
 
