@@ -75,6 +75,7 @@ Le entità utilizzate sono:
 - User: rappresenta l'azienda utilizzante
 
 
+
 È presente anche una funzione di seeding, che permette il riempimento iniziale del database con dei valori preimpostati,
 avendo così la possibilità di eseguire dei test iniziali
 
@@ -170,4 +171,5 @@ vorreste commissionarmi qualche altro lavoro
 [![](https://img.shields.io/badge/linkedin-blue?logo=linkedin)](https://www.linkedin.com/in/giovanni-innaimi/) 
 [![](https://img.shields.io/badge/Fiverr-green?logo=fiverr&labelColor=%23004F1B)](https://it.fiverr.com/giovanniinnaimi)
 [![](https://img.shields.io/badge/Instagram-%23E3314C?logo=instagram&logoColor=white)](https://www.instagram.com/foreachsolutions/)
+
 
