@@ -1,7 +1,7 @@
 # HR Management per aziende
 
 
-<img src="/images/ForeachSolutions.jpg" width="200" height="200" style="border-radius: 2px;" alt="a">
+<img src="/images/ForeachSolutions.jpg" width="150" height="150" style="border-radius: 2px;" alt="a">
 
 # indice
 - [Breve introduzione](#introduzione)
@@ -86,45 +86,54 @@ Per lo sviluppo di quest'applicazione sono state usate tecnologie varie. Abbiamo
 <figcaption>JAVA</figcaption>
 </figure>
 
+
 <figure>
     <img src="/images/icons8-spring-boot-48.png" alt="SpringBoot" />
     <figcaption>SpringBoot</figcaption>
 </figure>
 
+
 <figure>
 <img src="images/springsecurity.png" width="48" height="48" style="border-radius: 10px"/>
 <figcaption>Spring Security</figcaption>
 </figure>
+
 
 <figure>
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_data_base_with_logo.png" height="48" style="border-radius: 10px"/>
 <figcaption>Json Web Token</figcaption>
 </figure>
 
+
 <figure>
 <img src="images/springsecurity.png" width="48" height="48" style="border-radius: 10px"/>
 <figcaption>Spring Security</figcaption>
 </figure>
+
 
 <figure>
 <img src="https://seeklogo.com/images/J/json-web-tokens-jwt-io-logo-C003DEC47A-seeklogo.com.png" width="48" height="48" style="border-radius: 10px"/>
 <figcaption>Json Web Token</figcaption>
 </figure>
 
+
 <figure>
 <img src="images/tomcat.png"width="48" height="48" alt="TOMCAT"/>
 <figcaption>Tomcat Web Server</figcaption>
 </figure>
+
 
 <figure>
     <img src="https://miro.medium.com/v2/resize:fit:400/0*jba3dz1j64rfhl5i.jpg" width="48" height="48" style="border-radius: 10px"  alt="Hibernate" />
     <figcaption>Hibernate</figcaption>
 </figure>
 
+
 <figure>
 <img src="https://help.apiary.io/images/swagger-logo.png" width="48" height="48" alt="SWAGGER"/>
 <figcaption>Spring Doc OpenAPI</figcaption>
 </figure>
+
 
 <figure>
 <img src="images/Apache_Feather_Logo.png" width="48" height="48" style="border-radius: 10px"/>
