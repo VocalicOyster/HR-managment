@@ -16,15 +16,15 @@ public class Applicants {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
-    private String surname;
+    @Column(nullable = false)
     private String fiscalCode;
     private String companyName;
     private boolean isDeleted;
 
     public Applicants(String name, String surname, String fiscalCode, String companyName, boolean isDeleted) {
         this.name = name;
-        this.surname = surname;
         this.fiscalCode = fiscalCode;
         this.companyName = companyName;
         this.isDeleted = isDeleted;
@@ -60,14 +60,6 @@ public class Applicants {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getFiscalCode() {

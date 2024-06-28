@@ -60,7 +60,6 @@ public class ApplicantServices {
 
             existingApplicant.setName(applicantRequestDTO.getName());
             existingApplicant.setFiscalCode(applicantRequestDTO.getFiscalCode());
-            existingApplicant.setSurname(applicantRequestDTO.getSurname());
 
             applicantRepository.saveAndFlush(existingApplicant);
             ApplicantResponseDTO response = modelMapper.map(applicantRequestDTO, ApplicantResponseDTO.class);
