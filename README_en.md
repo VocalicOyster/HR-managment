@@ -21,7 +21,7 @@
 #### Human resource management mainly aimed at companies
 
 The application was created for the purpose of being used by companies, for facilitated management
-of human resources, (so employees, candidates with related applications, etc...).
+of human resources, (so employees, candidates with related applicants, etc...).
 We find the possibility to manage their employees by adding a hiring of the
 related employee, adding for each employee leave, sick days,
 vacation days, overtime, upload payroll to facilitate management along with the administrative part
