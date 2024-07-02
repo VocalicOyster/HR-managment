@@ -125,8 +125,8 @@ Altre idee future verranno inserite qui
 
 # AUTORE
 
-Mi chiamo Giovanni, su GitHub [VocalicOyster](https://github.com/VocalicOyster), [questo]() invece è
-il mio [Linkedin]() e questo il mio profilo [Fiverr]() nel caso in cui vi sia piaciuto come lavoro e
+Mi chiamo Giovanni, su GitHub [VocalicOyster](https://github.com/VocalicOyster), questo invece è
+il mio [Linkedin](https://www.linkedin.com/in/giovanni-innaimi/) e questo il mio profilo [Fiverr](https://it.fiverr.com/giovanniinnaimi?up_rollout=true) nel caso in cui vi sia piaciuto come lavoro e
 vorreste commissionarmi qualche altro lavoro
 
 [![](https://img.shields.io/badge/linkedin-blue?logo=linkedin)](https://www.linkedin.com/in/giovanni-innaimi/)
