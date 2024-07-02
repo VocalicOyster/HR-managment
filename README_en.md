@@ -125,6 +125,9 @@ Other future ideas will be included here
 [Return to index](#index)
 
 # AUTHOR
+My name is John, on GitHub [VocalicOyster](https://github.com/VocalicOyster), this instead is
+my [Linkedin](https://www.linkedin.com/in/giovanni-innaimi/) and this is my [Fiverr](https://it.fiverr.com/giovanniinnaimi?up_rollout=true) profile in case you liked my work and
+you would like to commit me for some others
 
 [![](https://img.shields.io/badge/linkedin-blue?logo=linkedin)](https://www.linkedin.com/in/giovanni-innaimi/)
 [![](https://img.shields.io/badge/Fiverr-green?logo=fiverr&labelColor=%23004F1B)](https://it.fiverr.com/giovanniinnaimi)
