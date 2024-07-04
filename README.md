@@ -1,7 +1,7 @@
 # HR Management per aziende
 
 <a href="https://www.instagram.com/foreachsolutions">
-<img src="/images/ForeachSolutions.jpg" width="150" height="150" style="border-radius: 2px;" alt="a">
+<img src="/backend/images/ForeachSolutions.jpg" width="150" height="150" style="border-radius: 2px;" alt="a">
 </a>
 
 # Indice
