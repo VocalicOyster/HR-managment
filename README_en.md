@@ -1,7 +1,7 @@
 # HR Management for Businesses
 
 <a href="https://www.instagram.com/foreachsolutions/">
-<img src="/images/ForeachSolutions.jpg" width="150" height="150" style="border-radius: 2px;" alt="a">
+<img src="/backend/images/ForeachSolutions.jpg" width="150" height="150" style="border-radius: 2px;" alt="a">
 </a>
 
 # Index
@@ -29,11 +29,11 @@ of the company,
 managing applications with related candidates, applications and scheduling days and times of
 interviews
 
-![general project structure](/images/project%20structure.png)
+![general project structure](/backend/images/project%20structure.png)
 
-![structure](/images/structure.png)
+![structure](/backend/images/structure.png)
 
-![controller](/images/controller.png)
+![controller](/backend/images/controller.png)
 
 # How to start
 
@@ -59,7 +59,7 @@ already present in the project itself.
 All the endpoints will be shown, and you will also be able to try them out. You can find
 more info on SpringDoc [here](https://springdoc.org/)
 
-![Documentation](/images/documentazione.png)
+![Documentation](/backend/images/documentazione.png)
 
 [Return to index](#index)
 
@@ -96,7 +96,7 @@ thus having the possibility to run initial tests
 Various technologies were used in the development of this application. We have:
 
 
-<img src="https://logowik.com/content/uploads/images/java1655.logowik.com.webp" width="48" height="48" style="border-radius: 10px" alt="JAVA"/>  <img src="/images/icons8-spring-boot-48.png" alt="SpringBoot"/>  <img src="images/springsecurity.png" width="48" height="48" style="border-radius: 10px"/>  <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_data_base_with_logo.png" height="48" style="border-radius: 10px"/><img src="images/springsecurity.png" width="48" height="48" style="border-radius: 10px"/>  <img src="https://seeklogo.com/images/J/json-web-tokens-jwt-io-logo-C003DEC47A-seeklogo.com.png" width="48" height="48" style="border-radius: 10px"/>  <img src="https://miro.medium.com/v2/resize:fit:400/0*jba3dz1j64rfhl5i.jpg" width="48" height="48" style="border-radius: 10px"  alt="Hibernate" />  <img src="https://help.apiary.io/images/swagger-logo.png" width="48" height="48" alt="SWAGGER"/>  <img src="images/Apache_Feather_Logo.png" width="48" height="48" style="border-radius: 10px"/>  <img src="/images/tomcat.png" width="48" height="48"/>
+<img src="https://logowik.com/content/uploads/images/java1655.logowik.com.webp" width="48" height="48" style="border-radius: 10px" alt="JAVA"/>  <img src="/backend/images/icons8-spring-boot-48.png" alt="SpringBoot"/>  <img src="/backend/images/springsecurity.png" width="48" height="48" style="border-radius: 10px"/>  <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_data_base_with_logo.png" height="48" style="border-radius: 10px"/><img src="images/springsecurity.png" width="48" height="48" style="border-radius: 10px"/>  <img src="https://seeklogo.com/images/J/json-web-tokens-jwt-io-logo-C003DEC47A-seeklogo.com.png" width="48" height="48" style="border-radius: 10px"/>  <img src="https://miro.medium.com/v2/resize:fit:400/0*jba3dz1j64rfhl5i.jpg" width="48" height="48" style="border-radius: 10px"  alt="Hibernate" />  <img src="https://help.apiary.io/images/swagger-logo.png" width="48" height="48" alt="SWAGGER"/>  <img src="/backend/images/Apache_Feather_Logo.png" width="48" height="48" style="border-radius: 10px"/>  <img src="/backend/images/tomcat.png" width="48" height="48"/>
 
 [Return to index](#index)
 
