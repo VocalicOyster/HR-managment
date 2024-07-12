@@ -3,6 +3,10 @@ import React, {useState} from "react";
 export function Login() {
     const [isHoverUsername, setIsHoverUsername] = useState(false);
     const [isHoverPassword, setIsHoverPassword] = useState(false);
+    const [isHoverButton, setIsHoverButton] = useState(false);
+    const [user, setUser] = useState({username: "", password: ""})
+    const [error, setError] = useState(false);
+    const [errorMess, setErrorMess] = useState("");
 
     const loginContainerStyle = {
         width: '400px',
@@ -19,8 +23,8 @@ export function Login() {
         borderRadius: '100px',
         width: '100px',
         position: 'absolute',
-        top: '10px',
-        left: '150px'
+        top: '60px',
+        left: '145px'
     }
 
     const poweredText = {
@@ -34,14 +38,15 @@ export function Login() {
         color: '#3F72AF',
         fontSize: '18px',
         position: 'absolute',
-        left: '115px',
-        top: '100px'
+        left: '110px',
+        top: '150px'
     }
 
     const inputContainerStyle = {
         width: '250px',
         height: '300px',
         position: 'relative',
+        top: '90px',
         left: '80px',
         display: 'flex',
         placeItems: 'center',
@@ -58,23 +63,41 @@ export function Login() {
     const inputUsernameStyle = {
         width: '240px',
         height: '40px',
-        borderTop: 'none',
-        borderRight: 'none',
-        borderLeft: isHoverUsername ? '1.5px solid gray' : 'none',
-        borderBottom: isHoverUsername ? '1.5px solid gray' : 'none',
-        backgroundColor: isHoverUsername ? '#3F72AF' : '#F9F7F7',
-        transition: 'background-color 0.15s ease-in-out, borderLeft 0.2s ease-in-out, borderBottom 0.2s ease-in-out', 
+        border: 'none',
+        borderLeft: 'none',
+        borderBottom: error ? '1px solid red' : 'none',
+        boxShadow: isHoverUsername ? '-2px 2px 6px gray' : '',
+        backgroundColor: isHoverUsername ? '#B4C4DE' : '#F9F7F7',
+        transition: 'background-color 0.15s ease-in-out, boxShadow 0.3s ease-in-out', 
     }
 
     const inputPasswordStyle = {
         width: '240px',
         height: '40px',
-        borderTop: 'none',
-        borderRight: 'none',
-        borderLeft: isHoverPassword ? '1.5px solid gray' : 'none',
-        borderBottom: isHoverPassword ? '1.5px solid gray' : 'none',
-        backgroundColor: isHoverPassword ? '#3F72AF' : '#F9F7F7',
-        transition: 'background-color 0.15s ease-in-out, borderLeft 0.2s ease-in-out, borderBottom 0.2s ease-in-out'
+        border: 'none',
+        borderBottom: error ? '1px solid red' : 'none',
+        boxShadow: isHoverPassword ? '-2px 2px 6px gray' : '',
+        backgroundColor: isHoverPassword ? '#B4C4DE' : '#F9F7F7',
+        transition: 'background-color 0.15s ease-in-out, boxxShadow 0.3s ease-in-out'
+    }
+
+    const submitButton = {
+        width: '150px',
+        height: '40px',
+        position: 'absolute',
+        top: '480px',
+        left: '130px',
+        border: 'none',
+        backgroundColor: '#B4C4DE',
+        boxShadow: isHoverButton ? '-2px 2px 6px gray' : ''
+    }
+
+    const errorStyle = {
+        position: 'absolute',
+        top: '230px',
+        left: '90px',
+        color: 'red'
+
     }
     
 
@@ -93,6 +116,48 @@ export function Login() {
         setIsHoverPassword(false);
     }
 
+    const HandleMouseOverButton = () => {
+        setIsHoverButton(true);
+    }
+    const HandleMouseOutButton = () => {
+        setIsHoverButton(false);
+    }
+
+    const HandleLogin = () => {
+        fetch("http://localhost:8080/login", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({'username': user.username, 'password': user.password})
+            })
+        .then(response => response.json())
+        .then(data => {
+            if(data.internalCode == 400) {
+                setError(true);
+                setErrorMess("Username o password non validi")
+            }
+        })
+    }
+
+    const HandleUsernameChange = (e) => {
+            setUser(
+                {
+                    ...user,
+                    username: e.target.value
+                }
+            )
+    }
+
+    const HandlePasswordChange = (e) => {
+            setUser(
+                {
+                    ...user,
+                    password: e.target.value
+                }
+            )
+    }
+
 
     return ( 
         <div style={loginContainerStyle}> 
@@ -103,17 +168,22 @@ export function Login() {
                
                 <div style={inputDivStyle}>
                     <label htmlFor="username" style={{ textAlign: 'left'}}>Username</label>
-                    <input type="text" name="username" placeholder="username" style={inputUsernameStyle} onMouseOver={HandleMouseOverUsername} onMouseOut={HandleMouseOutUsername}/>
+                    <input value={user.username} type="text" name="username" placeholder="username" style={inputUsernameStyle} onMouseOver={HandleMouseOverUsername} onMouseOut={HandleMouseOutUsername} onChange={HandleUsernameChange}/>
                 </div>
 
                 <div style={inputDivStyle}>
                     <label htmlFor="password" style={{ textAlign: 'left'}}>Password</label>
-                    <input type="password" name="password" placeholder="password" style={inputPasswordStyle} onMouseOver={HandleMouseOverPassword}  onMouseOut={HandleMouseOutPassword}/>
+                    <input value={user.password} type="password" name="password" placeholder="password" style={inputPasswordStyle} onMouseOver={HandleMouseOverPassword}  onMouseOut={HandleMouseOutPassword} onChange={HandlePasswordChange}/>
                 </div>
+
         
             </div>
 
+            <button type='submit' style={submitButton} onMouseOver={HandleMouseOverButton} onMouseOut={HandleMouseOutButton} onClick={HandleLogin}>LOGIN</button>
+            <p style={errorStyle}>{errorMess}</p>
+
             <p style={poweredText}>powered by ForeachSolutions</p>
+
         </div>
     )
 }
