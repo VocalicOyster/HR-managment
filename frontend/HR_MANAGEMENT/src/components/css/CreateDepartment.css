@@ -1,0 +1,53 @@
+#container {
+    height: 750px;
+        width: 1550px;
+        background-color: #3F72AF;
+        position: absolute;
+        display: flex;
+        place-items: center;
+        flex-direction: column;
+        place-content: center;
+        right: 30px;
+        top: 10px;
+        border-radius: 10px; 
+        border: 1px solid black;
+        box-shadow: -2px 2px 6px #112D4E; 
+}
+
+#formContainer {
+    height: 700px;
+    width: 450px;
+    background-color: #DBE2EF;
+    border-radius: 20px;
+    box-shadow: -4px 2px 6px #112D4E;
+}
+
+#ulDep {
+    padding: 40px;
+    position: absolute;
+    right: 608px;
+    bottom: 250px;
+}
+
+.liDep {
+    padding: 10px;
+    display: flex;
+    place-items: center;
+    flex-direction: column;
+}
+
+label {
+    padding-bottom: 5px;
+}
+
+h1, label {
+    color: #3F72AF;
+}
+
+#depImg {
+    width: 70px;
+    height: 70px;
+    position: relative;
+    right: 5px;
+    top: 50px;
+}
