@@ -23,11 +23,12 @@ public class DepartmentController {
 
 
     @PostMapping("/")
+    @CrossOrigin("http://localhost:5173/main")
     public ResponseEntity<Response> createDepartment(@RequestBody DepartmentRequestDTO departmentRequestDTO, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");
         try {
             DepartmentResponseDTO response = departmentService.createDepartment(departmentRequestDTO, companyName);
-            return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly from database", response));
+            return ResponseEntity.ok().body(new ResponseValid(200, "New department created correctly", response));
         } catch (DepartmentException e) {
             return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
         }

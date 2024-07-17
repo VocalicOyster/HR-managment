@@ -27,7 +27,6 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @CrossOrigin("http://localhost:5173")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest) throws BadCredentialsException {
         try {

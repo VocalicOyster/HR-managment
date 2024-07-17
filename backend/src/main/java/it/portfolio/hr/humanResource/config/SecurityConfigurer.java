@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -74,17 +75,5 @@ public class SecurityConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // Permetti tutte le origini. Puoi restringerle se necessario.
-        configuration.addAllowedMethod("*"); // Permetti tutti i metodi HTTP (GET, POST, ecc.). Puoi restringerle se necessario.
-        configuration.addAllowedHeader("*"); // Permetti tutti gli header. Puoi restringerli se necessario.
-        configuration.setAllowCredentials(true); // Permetti credenziali (cookie, header di autenticazione, ecc.). Puoi disabilitarlo se non necessario.
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Applica questa configurazione CORS a tutte le route.
-        return source;
-    }
 }
 

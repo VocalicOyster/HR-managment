@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function Navbar() {
+export function Navbar( { showCreateDep, showDepts }) {
   const [isActiveDept, setIsActiveDept] = useState(false);
   const [isActiveEmp, setIsActiveEmp] = useState(false);
   const [isActiveShowDept, setIsActiveShowDept] = useState(false);
@@ -11,6 +11,7 @@ export function Navbar() {
     width: "250px",
     border: "0px",
     backgroundColor: isActiveDept ? "#112D4E" : "#3F72AF",
+    borderBottom: '1px solid black'
   };
 
   const sideButtonStyleEmployee = {
@@ -18,6 +19,7 @@ export function Navbar() {
     width: "250px",
     border: "0px",
     backgroundColor: isActiveEmp ? "#112D4E" : "#3F72AF",
+    borderBottom: '1px solid black'
   };
 
    const sideButtonStyleShowDept = {
@@ -25,6 +27,7 @@ export function Navbar() {
     width: "250px",
     border: "0px",
     backgroundColor: isActiveShowDept ? "#112D4E" : "#3F72AF",
+    borderBottom: '1px solid black'
    }
 
    const sideButtonStyleShowEmp = {
@@ -32,7 +35,9 @@ export function Navbar() {
     width: "250px",
     border: "0px",
     backgroundColor: isActiveShowEmp ? "#112D4E" : "#3F72AF",
+    borderBottom: '1px solid black'
    }
+   
 
   const navbarStyle = {
     display: "flex",
@@ -43,7 +48,9 @@ export function Navbar() {
     left: "0",
     width: "300px",
     height: "100vh",
-    backgroundColor: "#DBE2EF",
+    backgroundColor: "#3F72AF",
+    boxShadow: '2px -2px 6px #112D4E',
+    border: '1px solid black'
   };
 
   const profileButtonStyle = {
@@ -95,6 +102,7 @@ export function Navbar() {
               style={sideButtonStyleDep}
               onMouseOver={onMouseOverSideButtonDept}
               onMouseLeave={onMouseLeaveSideButtonDept}
+              onClick={showCreateDep}
             >
               AGGIUNGI DIPARTIMENTO
             </button>
@@ -104,6 +112,7 @@ export function Navbar() {
               style={sideButtonStyleShowDept}
               onMouseOver={onMouseOverSideButtonShowDept}
               onMouseLeave={onMouseLeaveSideButtonShowDept}
+              onClick={showDepts}
             >
               MOSTRA DIPARTIMENTI
             </button>
