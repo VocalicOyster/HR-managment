@@ -9,6 +9,60 @@ export function ShowDepartments() {
   const [depts, setDepts] = useState([]);
   const token = sessionStorage.getItem("jwt");
 
+  const pStyle = {
+    position: "absolute",
+    right: "675px",
+    top: '300px',
+    fontSize: '20px'
+  }
+  const imgStyle = {
+    width: '250px',
+    height: '250px',
+    position: 'absolute',
+    right: "675px",
+    top: '50px'
+
+  }
+
+  const showDepReload = (depts) => {
+    return depts.length > 0 ? (
+      depts.map((dept) => (
+        <DepartmentCard
+          key={dept.id}
+          depName={dept.name}
+          depDesc={dept.description}
+          depId={dept.id}
+          deleteDepartment={() => deleteDepartment(dept.id)}
+        />
+      ))
+    ) : (
+      <>
+        <img src="src\assets\empty.png" alt="" style={imgStyle}/>
+        <p style={pStyle}>Nessun dipartimento presente!</p>
+      </>
+    );
+  };
+
+  const deleteDepartment = (depId) => {
+    console.log(token);
+    fetch(`http://localhost:8080/api/department/${depId}`, {
+      method: "DELETE",
+      headers: new Headers({
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status == 200) {
+          alert("Departimento eliminato con successo");
+          setDepts((prevDepts) =>
+            prevDepts.filter((dept) => dept.id !== depId)
+          );
+        } else alert(data.message);
+      });
+  };
+
   useEffect(() => {
     if (!token) {
       navigate("/");
@@ -29,34 +83,16 @@ export function ShowDepartments() {
           })
 
           .then((data) => {
-            if (data.data.length === 0) {
-              alert("Nessun dipartimento presente. Aggiungine uno!");
-            } else {
-              setDepts(data.data);
-            }
+            setDepts(data.data);
           });
 
       getDepts();
     }
   }, [token, navigate]);
 
-  console.log(depts);
-
   return (
     <div id="containerDepts">
-      <div id='cardContainer'>
-        {depts.length > 0 ? (
-          depts.map((dept) => (
-            <DepartmentCard
-              key={dept.id}
-              depName={dept.name}
-              depDesc={dept.description}
-            />
-          ))
-        ) : (
-          <p>Caricamento dei dipartimenti...</p>
-        )}
-      </div>
+      <div id="cardContainer">{showDepReload(depts)}</div>
     </div>
   );
 }

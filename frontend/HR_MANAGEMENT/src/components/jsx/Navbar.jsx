@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-export function Navbar( { showCreateDep, showDepts }) {
+export function Navbar( { showCreateDep, showDepts, showCreateEmp, showEmp, showCreateApp }) {
   const [isActiveDept, setIsActiveDept] = useState(false);
   const [isActiveEmp, setIsActiveEmp] = useState(false);
   const [isActiveShowDept, setIsActiveShowDept] = useState(false);
   const [isActiveShowEmp, setIsActiveShowEmp] = useState(false);
+  const [isActiveApp, setIsActiveApp] = useState(false)
 
   const sideButtonStyleDep = {
     height: "50px",
@@ -35,6 +36,14 @@ export function Navbar( { showCreateDep, showDepts }) {
     width: "250px",
     border: "0px",
     backgroundColor: isActiveShowEmp ? "#112D4E" : "#3F72AF",
+    borderBottom: '1px solid black'
+   }
+
+   const sideButtonStyleShowApp = {
+    height: "50px",
+    width: "250px",
+    border: "0px",
+    backgroundColor: isActiveApp ? "#112D4E" : "#3F72AF",
     borderBottom: '1px solid black'
    }
    
@@ -92,6 +101,14 @@ export function Navbar( { showCreateDep, showDepts }) {
     setIsActiveShowEmp(false);
   };
 
+  const onMouseOverSideButtonApp = () => {
+    setIsActiveApp(true);
+  }
+
+  const onMouseOutSideButtonApp = () => {
+    setIsActiveApp(false)
+  }
+
   return (
     <>
       <div style={navbarStyle}>
@@ -122,6 +139,7 @@ export function Navbar( { showCreateDep, showDepts }) {
               style={sideButtonStyleEmployee}
               onMouseOver={onMouseOverSideButtonEmp}
               onMouseLeave={onMouseLeaveSideButtonEmp}
+              onClick={showCreateEmp}
             >
               AGGIUNGI DIPENDENTI
             </button>
@@ -131,8 +149,19 @@ export function Navbar( { showCreateDep, showDepts }) {
               style={sideButtonStyleShowEmp}
               onMouseOver={onMouseOverSideButtonShowEmp}
               onMouseLeave={onMouseLeaveSideButtonShowEmp}
+              onClick={showEmp}
             >
               MOSTRA DIPENDENTI
+            </button>
+          </li>
+          <li>
+            <button
+              style={sideButtonStyleShowApp}
+              onMouseOver={onMouseOverSideButtonApp}
+              onMouseLeave={onMouseOutSideButtonApp}
+              onClick={showCreateApp}
+            >
+              AGGIUNGI CANDIDATO
             </button>
           </li>
         </ul>

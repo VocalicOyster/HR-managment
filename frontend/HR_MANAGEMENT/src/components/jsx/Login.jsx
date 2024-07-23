@@ -138,9 +138,9 @@ export function Login() {
   const HandleLogin = () => {
     fetch("http://localhost:8080/login", {
       method: "POST",
-      headers: {
+      headers: new Headers({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify({
         username: user.username,
         password: user.password,

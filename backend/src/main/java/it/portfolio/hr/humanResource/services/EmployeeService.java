@@ -7,13 +7,26 @@ import it.portfolio.hr.humanResource.models.DTOs.request.EmployeesRequestDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.*;
 import it.portfolio.hr.humanResource.repositories.*;
 import it.portfolio.hr.humanResource.validator.EmployeesValidator;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class EmployeeService {
@@ -34,17 +47,83 @@ public class EmployeeService {
     @Autowired
     private SickDaysRepository sickDaysRepository;
 
-    public EmployeesResponseDTO createEmployee(EmployeesRequestDTO employeesRequestDTO, String companyName) throws HiringException, EmployeesException {
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    @Value("${pathStorageProfileImages}")
+    private String pathProfileImages;
+
+    public EmployeesResponseDTO createEmployee(EmployeesRequestDTO employeesRequestDTO, String companyName) throws HiringException, EmployeesException, IOException {
         if (employeesValidator.isEmployeeValid(employeesRequestDTO, companyName)) {
-            Employees employees = modelMapper.map(employeesRequestDTO, Employees.class);
-            Hiring hiring = hiringRepository.findById(employeesRequestDTO.getHiring_id()).orElseThrow(() -> new HiringException("No Hiring retrieved from database", 400));
-            employees.setPaymentDate(LocalDate.now().toString());
-            employees.setCompanyName(companyName);
-            employees.setDeleted(false);
+            Employees employees = new Employees(employeesRequestDTO.getName(),
+                    employeesRequestDTO.getAddress(),
+                    employeesRequestDTO.getFiscalCode(),
+                    employeesRequestDTO.getHiringDate(),
+                    companyName,
+                    false
+            );
             employeesRepository.saveAndFlush(employees);
             return modelMapper.map(employees, EmployeesResponseDTO.class);
         }
         throw new EmployeesException("The inserted employee's information's are not valid", 400);
+    }
+
+    public boolean uploadProfileImage(MultipartFile profileImage, Long id, String companyName) throws IOException {
+        try {
+            Set<String> validExtensions = Set.of("png", "jpeg", "jpg");
+            if (profileImage == null || profileImage.getOriginalFilename() == null) {
+                throw new IOException("File is empty or missing.");
+            }
+            Employees employees = employeesRepository.findById(id, companyName).orElseThrow(() -> new IOException("No employee found with this id"));
+            String extension = FilenameUtils.getExtension(profileImage.getOriginalFilename()).toLowerCase();
+
+            if (!validExtensions.contains(extension)) {
+                throw new IOException("Invalid file type. Allowed types are: png, jpeg, jpg.");
+            }
+            String profileImageName = (employees.getName() + "." + extension).replace(" ", "");
+            File destinationDirectory = new File(pathProfileImages, profileImageName);
+            File controlFile = new File(pathProfileImages);
+            if (!controlFile.exists()) throw new IOException("Folder doesn't exist");
+            if (!controlFile.isDirectory()) throw new IOException("This is not a directory");
+            if (destinationDirectory.exists()) throw new IOException("File already exist");
+            profileImage.transferTo(destinationDirectory.toPath());
+            return true;
+        } catch (IOException e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    public boolean deleteProfileImage(Long id, String companyName) throws IOException {
+        Employees employees = employeesRepository.findById(id, companyName).orElseThrow(() -> new IOException("No employees found"));
+        String fileName = employees.getName().replace(" ", "");
+        File controlFile = new File(pathProfileImages);
+        if (!controlFile.exists()) throw new IOException("Folder doesn't exist");
+        Set<String> validExtensions = Set.of("png", "jpeg", "jpg");
+        for(String extension : validExtensions) {
+            String profileImageName = fileName + "." + extension;
+            File destinationDirectory = new File(pathProfileImages, profileImageName);
+            if(destinationDirectory.exists()) {
+                return destinationDirectory.delete();
+            }
+        }
+        return false;
+    }
+
+
+    public byte[] getProfileImage(Long id, String companyName) throws IOException {
+        Employees employees = employeesRepository.findById(id, companyName).orElseThrow(() -> new IOException("No Employee found"));
+
+        String filename = employees.getName().replace(" ", "");
+        String path = pathProfileImages + "\\" + filename + ".png";
+
+        File file = new File(path);
+        if (file.exists()) {
+            try (InputStream in = new FileInputStream(file)) {
+                return IOUtils.toByteArray(in);
+            }
+        } else {
+            throw new IOException("File does not exist at path: " + path);
+        }
     }
 
     public List<EmployeesResponseDTO> getAllEmployees(String companyName) {
@@ -52,6 +131,8 @@ public class EmployeeService {
         List<EmployeesResponseDTO> responseDTO = new ArrayList<>();
         for (Employees employees1 : employees) {
             EmployeesResponseDTO response = modelMapper.map(employees1, EmployeesResponseDTO.class);
+            response.setHiringDate(employees1.getHiringDate());
+            response.setAddress(employees1.getAddress());
             responseDTO.add(response);
         }
         return responseDTO;
@@ -65,7 +146,7 @@ public class EmployeeService {
     public EmployeesResponseDTO getByFiscalCode(String fiscalCode, String companyName) throws EmployeesException {
         Employees employees = employeesRepository.findByFiscalCode(fiscalCode, companyName).orElseThrow(() -> new EmployeesException("No employees retrieved with Fiscal Code: " + fiscalCode, 400));
 
-            return modelMapper.map(employees, EmployeesResponseDTO.class);
+        return modelMapper.map(employees, EmployeesResponseDTO.class);
     }
 
     public EmployeesResponseDTO updateById(Long id, EmployeesRequestDTO employeesRequestDTO, String companyName) throws EmployeesException, HiringException {
@@ -75,7 +156,6 @@ public class EmployeeService {
             employees.setAddress(employeesRequestDTO.getAddress());
             employees.setName(employeesRequestDTO.getName());
             employees.setFiscalCode(employeesRequestDTO.getFiscalCode());
-            Hiring hiring = hiringRepository.findById(employeesRequestDTO.getHiring_id()).orElseThrow(() -> new HiringException("No Hiring retrieved from database", 400));
 
             employeesRepository.saveAndFlush(employees);
             return modelMapper.map(employees, EmployeesResponseDTO.class);

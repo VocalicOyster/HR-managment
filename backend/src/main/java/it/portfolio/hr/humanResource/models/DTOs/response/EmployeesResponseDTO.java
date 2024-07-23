@@ -10,9 +10,36 @@ import lombok.NoArgsConstructor;
 public class EmployeesResponseDTO {
     private Long id;
     private String name;
+    private String address;
+    private String fiscalCode;
+    private String hiringDate;
 
     public Long getId() {
         return id;
+    }
+
+    public String getFiscalCode() {
+        return fiscalCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setFiscalCode(String fiscalCode) {
+        this.fiscalCode = fiscalCode;
+    }
+
+    public String getHiringDate() {
+        return hiringDate;
+    }
+
+    public void setHiringDate(String hiringDate) {
+        this.hiringDate = hiringDate;
     }
 
     public void setId(Long id) {
