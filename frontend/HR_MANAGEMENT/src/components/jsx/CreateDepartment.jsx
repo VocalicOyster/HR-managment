@@ -107,7 +107,7 @@ export function CreateDepartment() {
     <>
       <div id="container">
         <div id="formContainer">
-          <h1>Compila il form</h1>
+          <h1>Aggiungi un dipartimento</h1>
           <img src="src\assets\dep.png" alt="dep" id="depImg" />
           <ul id="ulDep">
             <li className="liDep">

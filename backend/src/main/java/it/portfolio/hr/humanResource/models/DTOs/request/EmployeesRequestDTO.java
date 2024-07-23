@@ -17,7 +17,7 @@ public class EmployeesRequestDTO {
     private String name;
     private String address;
     private String fiscalCode;
-    private Long hiring_id;
+    private String hiringDate;
 
     public Long getId() {
         return id;
@@ -50,11 +50,11 @@ public class EmployeesRequestDTO {
         this.fiscalCode = fiscalCode;
     }
 
-    public Long getHiring_id() {
-        return hiring_id;
+    public String getHiringDate() {
+        return hiringDate;
     }
 
-    public void setHiring_id(Long hiring_id) {
-        this.hiring_id = hiring_id;
+    public void setHiringDate(String hiringDate) {
+        this.hiringDate = hiringDate;
     }
 }

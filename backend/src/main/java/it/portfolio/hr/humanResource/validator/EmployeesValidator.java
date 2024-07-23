@@ -26,7 +26,7 @@ public class EmployeesValidator {
         return employeesRequestDTO.getAddress() != null &&
                 employeesRequestDTO.getFiscalCode() != null &&
                 employeesRequestDTO.getName() != null &&
-                employeesRequestDTO.getHiring_id() != null;
+                employeesRequestDTO.getHiringDate() != null;
     }
 
     private boolean isFiscalCodeValid(EmployeesRequestDTO employeesRequestDTO) {
@@ -40,10 +40,10 @@ public class EmployeesValidator {
     }
     private boolean employeeInsertedCorrect(EmployeesRequestDTO employeesRequestDTO)  {
         try {
-            employeesRequestDTO.getHiring_id();
             employeesRequestDTO.getName();
             employeesRequestDTO.getAddress();
             employeesRequestDTO.getFiscalCode();
+            employeesRequestDTO.getHiringDate();
             return true;
         }
         catch (Exception e) {

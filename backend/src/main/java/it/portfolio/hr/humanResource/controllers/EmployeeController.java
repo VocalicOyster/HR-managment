@@ -11,10 +11,19 @@ import it.portfolio.hr.humanResource.models.DTOs.response.EmployeesResponseDTO;
 import it.portfolio.hr.humanResource.models.DTOs.response.SituationResponseDTO;
 import it.portfolio.hr.humanResource.services.EmployeeService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.hc.client5.http.utils.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,8 +39,74 @@ public class EmployeeController {
         try {
             EmployeesResponseDTO response = employeeService.createEmployee(employees, companyName);
             return ResponseEntity.ok().body(new ResponseValid(200, "Employee created correctly", response));
-        } catch (HiringException | EmployeesException e) {
+        } catch (HiringException | EmployeesException | IOException e) {
             return ResponseEntity.status(400).body(new ResponseInvalid(400, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/profileImg/{id}")
+    public ResponseEntity<Response> uploadProfileImage(@RequestParam("profileImage") MultipartFile profileImage, @PathVariable Long id, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            boolean isUploaded = employeeService.uploadProfileImage(profileImage, id, companyName);
+            return ResponseEntity.ok().body(
+                    new ResponseValid(
+                            200,
+                            "Profile image uploaded correctly",
+                            isUploaded
+                    )
+            );
+        } catch (IOException e) {
+            return ResponseEntity.status(400).body(
+                    new ResponseInvalid(
+                            400,
+                            e.getMessage()
+                    )
+            );
+        }
+    }
+
+    @GetMapping(value = "/profileImg/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<Response> getProfileImage(@PathVariable Long id, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            byte[] profileImg = employeeService.getProfileImage(id, companyName);
+            String base64Image = Base64.encodeBase64String(profileImg);
+            return ResponseEntity.ok().body(
+                    new ResponseValid(200,
+                            "Profile image retrieved correctly",
+                            base64Image
+                    )
+            );
+        } catch (IOException e) {
+            return ResponseEntity.status(400).body(
+                    new ResponseInvalid(
+                            400,
+                            e.getMessage()
+                    )
+            );
+        }
+    }
+
+    @DeleteMapping("/profileImg/{id}")
+    public ResponseEntity<Response> deleteProfileImage(@PathVariable Long id, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        try {
+            boolean isDeleted = employeeService.deleteProfileImage(id, companyName);
+            return ResponseEntity.ok().body(
+                    new ResponseValid(
+                            200,
+                            "Deleted",
+                            isDeleted
+                    )
+            );
+        } catch (IOException e) {
+            return ResponseEntity.status(400).body(
+                    new ResponseInvalid(
+                            400,
+                            "Unable to delete"
+                    )
+            );
         }
     }
 
@@ -40,7 +115,7 @@ public class EmployeeController {
         String companyName = (String) request.getAttribute("companyName");
         List<EmployeesResponseDTO> responseDTOList = employeeService.getAllEmployees(companyName);
         if (responseDTOList.isEmpty()) {
-            return ResponseEntity.status(200).body(new ResponseValidNoData(200, "No data retrieved from database"));
+            return ResponseEntity.status(204).body(new ResponseValidNoData(204, "No data retrieved from database"));
         }
 
         return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly from database", responseDTOList));

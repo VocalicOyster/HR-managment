@@ -14,41 +14,10 @@
   box-shadow: -2px 2px 6px #112d4e;
 }
 
-#formContainer {
+#formContainerApp {
   height: 700px;
   width: 450px;
   background-color: #dbe2ef;
   border-radius: 20px;
   box-shadow: -4px 2px 6px #112d4e;
-}
-
-#ulDep {
-  padding: 40px;
-  position: absolute;
-  right: 608px;
-  bottom: 250px;
-}
-
-.liDep {
-  padding: 10px;
-  display: flex;
-  place-items: center;
-  flex-direction: column;
-}
-
-label {
-  padding-bottom: 5px;
-}
-
-h1,
-label {
-  color: #3f72af;
-}
-
-#depImg {
-  width: 70px;
-  height: 70px;
-  position: relative;
-  right: 5px;
-  top: 50px;
 }
