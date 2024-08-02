@@ -20,14 +20,10 @@ public class ApplicantValidator {
                 applicantExist(applicantRequestDTO, companyName);
     }
 
-    public boolean isApplicantValidPut(ApplicantRequestDTO applicantRequestDTO)  {
-        return isApplicantNotNull(applicantRequestDTO) &&
-                isFiscalCodeValid(applicantRequestDTO);
-    }
+
 
     private boolean isApplicantNotNull(ApplicantRequestDTO applicantRequestDTO){
         return applicantRequestDTO.getName() != null &&
-                applicantRequestDTO.getSurname() != null &&
                 applicantRequestDTO.getFiscalCode() != null;
     }
 

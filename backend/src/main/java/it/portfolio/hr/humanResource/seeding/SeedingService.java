@@ -2,11 +2,9 @@ package it.portfolio.hr.humanResource.seeding;
 
 import it.portfolio.hr.humanResource.entities.*;
 import it.portfolio.hr.humanResource.repositories.*;
-import org.hibernate.sql.ast.tree.expression.Over;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,9 +72,6 @@ public class SeedingService {
     private void seedApplicants() {
         List<Applicants> applicantsList = seedingProvider.generateApplicant();
         System.out.println("SIIIII" + applicantsList);
-//        for(Applicants applicants: applicantsList) {
-//            applicantRepository.saveAndFlush(applicants);
-//        }
         applicantRepository.saveAll(applicantsList);
     }
 
@@ -84,9 +79,6 @@ public class SeedingService {
         List<Applicants> applicantsList = applicantRepository.findAll(companyName);
         System.out.println("Candidate applicant " + applicantsList);
         List<CandidateEvaluations> candidateEvaluationsList = seedingProvider.generateCandidateEvaluations(applicantsList);
-//        for(CandidateEvaluations candidateEvaluations: candidateEvaluationsList) {
-//            candidateEvaluationRepository.saveAndFlush(candidateEvaluations);
-//        }
         candidateEvaluationRepository.saveAll(candidateEvaluationsList);
 
     }
@@ -207,7 +199,7 @@ public class SeedingService {
     }
 
     private void deleteInterview(String companyName) {
-        List<Interview> interviewList = interviewRepository.findAll(companyName);
+        List<Interview> interviewList = interviewRepository.findAllByCompanyName(companyName);
 
         for(Interview interview: interviewList) {
             interview.setDeleted(true);

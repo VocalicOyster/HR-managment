@@ -11,10 +11,12 @@ import it.portfolio.hr.humanResource.repositories.InterviewRepository;
 import it.portfolio.hr.humanResource.validator.InterviewValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class InterviewService {
@@ -46,8 +48,30 @@ public class InterviewService {
         throw new InterviewException("The inserted interview's information are not valid", 400);
     }
 
+    @Scheduled(cron = "0 0 2 * * 3")
+    private void deleteAppAndInterview() {
+        LocalDate now = LocalDate.now();
+        System.out.println(now);
+        List<Interview> interviewList = interviewRepository.findAllUndeleted();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            for(Interview interview : interviewList) {
+                LocalDate interviewDate = LocalDate.parse(interview.getInterviewDate(), dateTimeFormatter);
+                if(interviewDate.isBefore(now)) {
+                    Long applicantId = interview.getApplicants().getId();
+                    interviewRepository.deleteById(interview.getId());
+                    applicantRepository.deleteById(applicantId);
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     public List<InterviewResponseDTO> getAllInterview(String companyName) {
-        List<Interview> interviewList = interviewRepository.findAll(companyName);
+        List<Interview> interviewList = interviewRepository.findAllByCompanyName(companyName);
         List<InterviewResponseDTO> interviewResponseDTO = new ArrayList<>();
         for (Interview interview : interviewList) {
             InterviewResponseDTO interviewResponseDTOSingle = modelMapper.map(interview, InterviewResponseDTO.class);
@@ -55,6 +79,46 @@ public class InterviewService {
             interviewResponseDTO.add(interviewResponseDTOSingle);
         }
         return interviewResponseDTO;
+    }
+
+    public List<String> getAvailableTimes(String date, String companyName) {
+        String[] array = {
+                "10:00",
+                "10:30",
+                "11:00",
+                "11:30",
+                "12:00",
+                "12:30",
+                "13:00",
+                "13:30",
+                "14:00",
+                "14:30",
+                "15:00",
+                "15:30",
+                "16:00",
+                "16:30"
+        };
+        List<String> initialTimes = new ArrayList<>(Arrays.asList(array));
+        List<Interview> unavailableTimes = interviewRepository.findByDate(date, companyName);
+        for(Interview interview : unavailableTimes) {
+            initialTimes.removeIf(time -> Objects.equals(interview.getStartTime(), time));
+        }
+
+        return initialTimes;
+    }
+
+    public boolean controlInterview(InterviewRequestDTO interviewRequestDTO, String companyName) {
+        List<Interview> interviewList = interviewRepository.findByInterviewDate(interviewRequestDTO.getInterviewDate(), companyName);
+        if (interviewList.isEmpty()) {
+            return false;
+        }
+
+        for (Interview interview : interviewList) {
+            if (Objects.equals(interview.getStartTime(), interviewRequestDTO.getStartTime())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public InterviewResponseDTO getById(Long id, String companyName) throws InterviewException {
@@ -65,7 +129,7 @@ public class InterviewService {
     public InterviewResponseDTO updateById(Long id, InterviewRequestDTO interviewRequestDTO, String companyName) throws InterviewException, ApplicantException {
         Interview interview = interviewRepository.findById(id, companyName).orElseThrow(() -> new InterviewException("No interview retrieved with id" + id, 400));
 
-        Applicants applicants = applicantRepository.findById(interviewRequestDTO.getApplicants_id(), companyName).orElseThrow(() ->new ApplicantException("No applicants retrieved with id" + interviewRequestDTO.getApplicants_id(), 400) );
+        Applicants applicants = applicantRepository.findById(interviewRequestDTO.getApplicants_id(), companyName).orElseThrow(() -> new ApplicantException("No applicants retrieved with id" + interviewRequestDTO.getApplicants_id(), 400));
 
         interview.setApplicants(applicants);
         interview.setInterviewDate(interviewRequestDTO.getInterviewDate());

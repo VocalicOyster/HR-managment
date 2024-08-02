@@ -19,20 +19,15 @@ public class SeedingProvider {
 
     public List<Applicants> generateApplicant() {
         List<Applicants> applicantsList = new ArrayList<>();
-        applicantsList.add(new Applicants("Giovanni", "Lo Russo", "LRSGNN80A01G273N", "ForeachSolutions", false));
-        applicantsList.add(new Applicants("Salvo", "Regeni", "SLVRGN72S01G273E", "ForeachSolutions", false));
-        applicantsList.add(new Applicants("Gianluca", "Regeni", "GNLRGN72S01G273D", "ForeachSolutions", false));
-        applicantsList.add(new Applicants("Baldo", "Rossi", "BLDRSS02C07G273L", "ForeachSolutions", false));
+        applicantsList.add(new Applicants("Giovanni Lo Russo", "LRSGNN80A01G273N", "ForeachSolutions", false));
+        applicantsList.add(new Applicants("Salvo Regeni", "SLVRGN72S01G273E", "ForeachSolutions", false));
+        applicantsList.add(new Applicants("Gianluca Regeni", "GNLRGN72S01G273D", "ForeachSolutions", false));
+        applicantsList.add(new Applicants("Baldo Rossi", "BLDRSS02C07G273L", "ForeachSolutions", false));
         return applicantsList;
     }
 
     public List<CandidateEvaluations> generateCandidateEvaluations(List<Applicants> applicantsList) {
-        System.out.println(applicantsList);
         List<CandidateEvaluations> candidateEvaluationsList = new ArrayList<>();
-//        candidateEvaluationsList.add(new CandidateEvaluations(applicantsList.get(0), "E' andata davvero benissimo", true, applicantsList.get(0).getCompanyName(), false));
-//        candidateEvaluationsList.add(new CandidateEvaluations(applicantsList.get(1), "E' andata davvero malissimo", false, applicantsList.get(1).getCompanyName(), false));
-//        candidateEvaluationsList.add(new CandidateEvaluations(applicantsList.get(2), "E' andata davvero meglio del primo", true, applicantsList.get(2).getCompanyName(), false));
-
         for(Applicants applicants: applicantsList) {
             candidateEvaluationsList.add(new CandidateEvaluations(applicants, "E' andata davvero benissimo", true, applicants.getCompanyName(), false));
         }
@@ -64,7 +59,6 @@ public class SeedingProvider {
                 i++;
             }
         }
-        System.out.println(hiringList);
         return hiringList;
     }
 
@@ -73,7 +67,6 @@ public class SeedingProvider {
         for(Applicants applicants: applicantsList) {
             interviewList.add(new Interview(applicants, LocalDate.now().toString(), LocalTime.now().toString(), applicants.getCompanyName(), false));
         }
-        System.out.println(interviewList);
         return interviewList;
     }
 
@@ -82,7 +75,6 @@ public class SeedingProvider {
         for(Department department: departmentList) {
             jobAnnouncementList.add(new JobAnnouncement(ControctsEnum.FIXED_TERM, "Buuuuuu", PerTimeEnum.PART_TIME, "Cerchiamo", department, "ForeachSolutions", false));
         }
-        System.out.println(jobAnnouncementList);
         return jobAnnouncementList;
     }
 

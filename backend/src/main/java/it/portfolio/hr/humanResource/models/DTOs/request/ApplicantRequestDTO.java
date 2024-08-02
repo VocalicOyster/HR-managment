@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class ApplicantRequestDTO {
 
     private String name;
-    private String surname;
     private String fiscalCode;
 
 
@@ -23,13 +22,6 @@ public class ApplicantRequestDTO {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public String getFiscalCode() {
         return fiscalCode;

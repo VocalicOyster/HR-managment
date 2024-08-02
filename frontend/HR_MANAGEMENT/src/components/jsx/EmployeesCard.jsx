@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export function EmployeesCard({ id, nome, address, fiscalCode, hiringDate }) {
+export function EmployeesCard({ id, nome, address, fiscalCode, hiringDate, deleteEmployee }) {
   const token = sessionStorage.getItem("jwt");
   const [imageUrl, setImageUrl] = useState("");
   const [isOverDelete, setIsOverDelete] = useState(false);
@@ -20,6 +20,7 @@ export function EmployeesCard({ id, nome, address, fiscalCode, hiringDate }) {
     display: "flex",
     flexDirection: "column",
     position: "relative",
+    border: '1px solid black'
   };
 
   const imgDivStyle = {
@@ -106,7 +107,7 @@ export function EmployeesCard({ id, nome, address, fiscalCode, hiringDate }) {
 
   return (
     <div style={employeesCardContainer}>
-      <button style={deleteButtonStyle}onMouseOver={HandleIsOverDelete} onMouseOut={HandleIsOutDelete}></button>
+      <button style={deleteButtonStyle}onMouseOver={HandleIsOverDelete} onMouseOut={HandleIsOutDelete} onClick={deleteEmployee}></button>
       <div
         style={{
           width: "100%",

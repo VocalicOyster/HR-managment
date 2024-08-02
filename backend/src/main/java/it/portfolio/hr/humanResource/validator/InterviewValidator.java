@@ -40,9 +40,8 @@ public class InterviewValidator {
     }
 
     private boolean isDateAndTimeFree(InterviewRequestDTO interviewRequestDTO, String companyName) {
-        Optional<Interview> dateInterview = interviewRepository.findByInterviewDate(interviewRequestDTO.getInterviewDate(), companyName);
         Optional<Interview> startTimeInterview = interviewRepository.findByStartTime(interviewRequestDTO.getStartTime(), companyName);
 
-        return dateInterview.isEmpty() && startTimeInterview.isEmpty();
+        return startTimeInterview.isEmpty();
     }
 }

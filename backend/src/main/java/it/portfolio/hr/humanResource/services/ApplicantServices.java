@@ -49,6 +49,11 @@ public class ApplicantServices {
         return applicantResponseDTOList;
     }
 
+    public boolean controlApplicant(ApplicantRequestDTO applicantRequestDTO, String companyName) {
+            Optional<Applicants> applicants = applicantRepository.findByFiscalCode(applicantRequestDTO.getFiscalCode(), companyName);
+            return applicants.isPresent();
+    }
+
     public ApplicantResponseDTO getById(Long id, String companyName) throws ApplicantException {
         Applicants applicants = applicantRepository.findById(id, companyName).orElseThrow(() ->  new ApplicantException("No applicant retrieved with id: " + id, 400));
         return modelMapper.map(applicants, ApplicantResponseDTO.class);

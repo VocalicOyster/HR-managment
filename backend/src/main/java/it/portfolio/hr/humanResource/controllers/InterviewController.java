@@ -12,6 +12,7 @@ import it.portfolio.hr.humanResource.services.InterviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,41 @@ public class InterviewController {
             return ResponseEntity.status(200).body(new ResponseValid(200, "No interview retrieved from database", interview));
         }
         return ResponseEntity.ok().body(new ResponseValid(200, "Interviews retrieved correctly from database", interview));
+    }
+
+    @PostMapping("/control")
+    public ResponseEntity<Response> controlInterview(@RequestBody InterviewRequestDTO interviewRequestDTO, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        boolean isPresent =  interviewService.controlInterview(interviewRequestDTO, companyName);
+        if(isPresent) {
+            return ResponseEntity.status(400).body(
+                    new ResponseValidNoData(
+                            400,
+                            "Interview at this time is already programmed"
+                    )
+            );
+        }
+
+        return ResponseEntity.ok().body(
+                new ResponseValidNoData(
+                        200,
+                        "No interview at this time"
+                )
+        );
+    }
+
+
+    @PostMapping("/time")
+    public ResponseEntity<Response> getAllAvailableTime(@RequestParam String date, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        List<String> availableTimes = interviewService.getAvailableTimes(date, companyName);
+        return ResponseEntity.ok().body(
+                new ResponseValid(
+                        200,
+                        "retrieved",
+                        availableTimes
+                )
+        );
     }
 
     @GetMapping("/{id}")

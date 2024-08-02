@@ -59,6 +59,28 @@ public class ApplicantController {
         }
     }
 
+    @PostMapping("/control")
+    public ResponseEntity<Response> controlApplicant(@RequestBody ApplicantRequestDTO applicantRequestDTO, HttpServletRequest request) {
+        String companyName = (String) request.getAttribute("companyName");
+        boolean isPresent = applicantServices.controlApplicant(applicantRequestDTO, companyName);
+        if(isPresent) {
+            return ResponseEntity.status(400).body(
+                    new ResponseInvalid(
+                            400,
+                            "Applicant in db"
+                    )
+            );
+        }
+        return ResponseEntity.ok().body(
+                new ResponseValidNoData(
+                        200,
+                        "Applicant not in db"
+                )
+        );
+
+    }
+
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<Response> updateApplicantById(@PathVariable Long id, @RequestBody ApplicantRequestDTO applicantRequestDTO, HttpServletRequest request) {
         String companyName = (String) request.getAttribute("companyName");

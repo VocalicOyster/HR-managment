@@ -44,7 +44,6 @@ export function ShowDepartments() {
   };
 
   const deleteDepartment = (depId) => {
-    console.log(token);
     fetch(`http://localhost:8080/api/department/${depId}`, {
       method: "DELETE",
       headers: new Headers({
