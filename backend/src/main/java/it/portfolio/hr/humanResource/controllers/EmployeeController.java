@@ -93,18 +93,28 @@ public class EmployeeController {
         String companyName = (String) request.getAttribute("companyName");
         try {
             boolean isDeleted = employeeService.deleteProfileImage(id, companyName);
-            return ResponseEntity.ok().body(
-                    new ResponseValid(
-                            200,
-                            "Deleted",
-                            isDeleted
+
+            if(isDeleted) {
+                return ResponseEntity.ok().body(
+                        new ResponseValid(
+                                200,
+                                "Deleted",
+                                isDeleted
+                        )
+                );
+            }
+
+            return ResponseEntity.status(400).body(
+                    new ResponseInvalid(
+                            400,
+                            "Can't Deleted"
                     )
             );
         } catch (IOException e) {
             return ResponseEntity.status(400).body(
                     new ResponseInvalid(
                             400,
-                            "Unable to delete"
+                            e.getMessage()
                     )
             );
         }
@@ -115,7 +125,7 @@ public class EmployeeController {
         String companyName = (String) request.getAttribute("companyName");
         List<EmployeesResponseDTO> responseDTOList = employeeService.getAllEmployees(companyName);
         if (responseDTOList.isEmpty()) {
-            return ResponseEntity.status(204).body(new ResponseValidNoData(204, "No data retrieved from database"));
+            return ResponseEntity.status(200).body(new ResponseValid(200, "No data retrieved from database", responseDTOList));
         }
 
         return ResponseEntity.ok().body(new ResponseValid(200, "Data retrieved correctly from database", responseDTOList));

@@ -23,20 +23,20 @@ export function ShowEmployees() {
   };
 
   const container = {
-    height: '750px',
-    width: '1550px',
-    backgroundColor: employees.lenght > 0 ? '#3f72af' : '#DBE2EF',
-    position: 'absolute',
-    display: 'flex',
-    placeItems: 'center',
-    flexDirection: 'column',
-    placeContent: 'center',
-    right: '30px',
-    top: '10px',
-    borderRadius: '10px',
-    border: '1px solid black',
-    boxShadow: '-2px 2px 6px #112d4e'
-  }
+    height: "750px",
+    width: "1550px",
+    backgroundColor: employees.lenght > 0 ? "#3f72af" : "#DBE2EF",
+    position: "absolute",
+    display: "flex",
+    placeItems: "center",
+    flexDirection: "column",
+    placeContent: "center",
+    right: "30px",
+    top: "10px",
+    borderRadius: "10px",
+    border: "1px solid black",
+    boxShadow: "-2px 2px 6px #112d4e",
+  };
 
   useEffect(() => {
     if (!token) {
@@ -51,19 +51,53 @@ export function ShowEmployees() {
         }),
       })
         .then((response) => {
-          if (response.status == 204) {
-            setEmployees([]);
-          } else {
             return response.json();
-          }
         })
         .then((data) => {
+          if(data.data.length > 0) {
           setEmployees(data.data);
+          }
         });
     };
 
     getEmployees();
   }, [token, navigate]);
+
+  const deleteEmployee = (id) => {
+    fetch(`http://localhost:8080/api/employee/profileImg/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((dataImg) => {
+        if (dataImg.status == 200) {
+          fetch(`http://localhost:8080/api/employee/${id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status == 200) {
+                alert("Impiegato eliminato con successo");
+                setEmployees((prevEmps) =>
+                  prevEmps.filter((employee) => employee.id !== id)
+                );
+              }
+            });
+        } else {
+          alert(
+            "Impiegato eliminato con successo ma nessuna immagine di profilo presente"
+          );
+          console.log(dataImg.message);
+        }
+      });
+  };
 
   const showEmployeesReload = (employees) => {
     return employees.length > 0 ? (
@@ -75,6 +109,7 @@ export function ShowEmployees() {
           address={employee.address}
           fiscalCode={employee.fiscalCode}
           hiringDate={employee.hiringDate}
+          deleteEmployee={() => deleteEmployee(employee.id)}
         />
       ))
     ) : (
@@ -84,8 +119,6 @@ export function ShowEmployees() {
       </>
     );
   };
-
-  
 
   return (
     <div style={container}>

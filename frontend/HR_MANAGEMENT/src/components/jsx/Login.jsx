@@ -88,8 +88,8 @@ export function Login() {
     width: "150px",
     height: "40px",
     position: "absolute",
-    top: "480px",
-    left: "130px",
+    top: "220px",
+    left: "50px",
     border: "none",
     backgroundColor: "#B4C4DE",
     boxShadow: isHoverButton ? "-2px 2px 6px gray" : "",
@@ -101,6 +101,13 @@ export function Login() {
     left: "90px",
     color: "red",
   };
+
+  const registerP = {
+    position: 'relative',
+    top: '220px',
+    right: '115px',
+    fontSize: '12px'
+  }
 
   const HandleMouseOverUsername = () => {
     setIsHoverUsername(true);
@@ -135,7 +142,8 @@ export function Login() {
 
   const navigate = useNavigate();
 
-  const HandleLogin = () => {
+  const HandleLogin = (e) => {
+    e.preventDefault();
     fetch("http://localhost:8080/login", {
       method: "POST",
       headers: new Headers({
@@ -173,6 +181,11 @@ export function Login() {
     });
   };
 
+  const navigateRegistartion = (e) => {
+    e.preventDefault();
+    navigate("/registration");
+  }
+
   return (
     <div style={loginContainerStyle}>
       <img
@@ -182,7 +195,7 @@ export function Login() {
       />
 
       <h3 style={welcomeText}>Benvenuto! Fai il login</h3>
-      <div style={inputContainerStyle}>
+      <form style={inputContainerStyle} method="post"  onSubmit={HandleLogin}>
         <div style={inputDivStyle}>
           <label htmlFor="username" style={{ textAlign: "left" }}>
             Username
@@ -214,17 +227,18 @@ export function Login() {
             onChange={HandlePasswordChange}
           />
         </div>
-      </div>
 
-      <button
+        <button
         type="submit"
         style={submitButton}
         onMouseOver={HandleMouseOverButton}
         onMouseOut={HandleMouseOutButton}
-        onClick={HandleLogin}
       >
         LOGIN
       </button>
+      </form>
+
+      <p style={registerP}> Non sei ancora registrato? <a href="/registration" onClick={navigateRegistartion}>REGISTARTI ORA</a></p>
       <p style={errorStyle}>{errorMess}</p>
 
       <p style={poweredText}>powered by ForeachSolutions</p>

@@ -16,13 +16,18 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     Optional<Interview> findByStartTime(@Param("startTime") String startTime, @Param("companyName") String companyName);
 
     @Query("SELECT i FROM Interview i WHERE i.interviewDate = :interviewDate AND i.companyName = :companyName AND i.isDeleted = false")
-    Optional<Interview> findByInterviewDate(@Param("interviewDate") String interviewDate, @Param("companyName") String companyName);
+    List<Interview> findByInterviewDate(@Param("interviewDate") String interviewDate, @Param("companyName") String companyName);
 
     @Query("SELECT i FROM Interview i WHERE i.id = :id AND i.companyName = :companyName AND i.isDeleted = false")
     Optional<Interview> findById(@Param("id") Long id, @Param("companyName") String companyName);
 
     @Query("SELECT i FROM Interview i WHERE  i.companyName = :companyName AND i.isDeleted = false")
-    List<Interview> findAll(@Param("companyName") String companyName);
+    List<Interview> findAllByCompanyName(@Param("companyName") String companyName);
 
+    @Query("SELECT i FROM Interview i WHERE i.interviewDate = :date AND i.companyName = :companyName AND i.isDeleted = false")
+    List<Interview> findByDate(@Param("date") String date, @Param("companyName") String companyName);
+
+    @Query("SELECT i FROM Interview i WHERE   i.isDeleted = false")
+    List<Interview> findAllUndeleted();
 
 }

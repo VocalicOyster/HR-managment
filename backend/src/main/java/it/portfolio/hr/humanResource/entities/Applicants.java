@@ -22,8 +22,7 @@ public class Applicants {
     private String fiscalCode;
     private String companyName;
     private boolean isDeleted;
-
-    public Applicants(String name, String surname, String fiscalCode, String companyName, boolean isDeleted) {
+    public Applicants(String name, String fiscalCode, String companyName, boolean isDeleted) {
         this.name = name;
         this.fiscalCode = fiscalCode;
         this.companyName = companyName;
