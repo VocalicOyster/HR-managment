@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
-export function Navbar( { showCreateDep, showDepts, showCreateEmp, showEmp, showCreateApp }) {
+export function Navbar( { showCreateDep, showDepts, showCreateEmp, showEmp, showCreateApp, showInterview }) {
   const [isActiveDept, setIsActiveDept] = useState(false);
   const [isActiveEmp, setIsActiveEmp] = useState(false);
   const [isActiveShowDept, setIsActiveShowDept] = useState(false);
   const [isActiveShowEmp, setIsActiveShowEmp] = useState(false);
   const [isActiveApp, setIsActiveApp] = useState(false)
+  const [isActiveShowInterview, setIsActiveShowInterview] = useState(false);
 
   const sideButtonStyleDep = {
     height: "50px",
@@ -72,6 +73,14 @@ export function Navbar( { showCreateDep, showDepts, showCreateEmp, showEmp, show
     backgroundPosition: "center",
   };
 
+  const sideButtonShowInterview = {
+    height: "50px",
+    width: "250px",
+    border: "0px",
+    backgroundColor: isActiveShowInterview ? "#112D4E" : "#3F72AF",
+    borderBottom: '1px solid black'
+  }
+
   const onMouseOverSideButtonDept = () => {
     setIsActiveDept(true);
   };
@@ -108,6 +117,13 @@ export function Navbar( { showCreateDep, showDepts, showCreateEmp, showEmp, show
   const onMouseOutSideButtonApp = () => {
     setIsActiveApp(false)
   }
+
+  const onMouseOverSideButtonInt = () => {
+    setIsActiveShowInterview(true);
+  };
+  const onMouseOutSideButtonInt = () => {
+    setIsActiveShowInterview(false);
+  };
 
   return (
     <>
@@ -162,6 +178,16 @@ export function Navbar( { showCreateDep, showDepts, showCreateEmp, showEmp, show
               onClick={showCreateApp}
             >
               AGGIUNGI CANDIDATO
+            </button>
+          </li>
+          <li>
+            <button
+            style={sideButtonShowInterview}
+            onMouseOver={onMouseOverSideButtonInt}
+            onMouseOut={onMouseOutSideButtonInt}
+            onClick={showInterview}
+            >
+              MOSTRA COLLOQUI
             </button>
           </li>
         </ul>

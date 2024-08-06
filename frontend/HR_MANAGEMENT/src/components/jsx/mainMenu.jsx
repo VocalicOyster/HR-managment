@@ -5,7 +5,8 @@ import { CreateDepartment } from "./CreateDepartment";
 import { ShowDepartments } from "./ShowDepartments";
 import { CreateEmployee } from "./CreateEmployee";
 import { ShowEmployees } from "./ShowEmployees";
-import { CreateApplicant } from "./CreateApplicant";
+import { CreateApplicant } from "./CreateApplicant"
+import {ShowInterview} from "../jsx/ShowInterview"
 
 
 export function MainMenu() {
@@ -15,8 +16,12 @@ export function MainMenu() {
   const [showCreateEmp, setShowCreateEmp] = useState(false);
   const [showEmployees, setShowEmployees] = useState(false);
   const [showCreateApp, setShowCreateApp] = useState(false);
+  const [showInterview, setShowInterview] = useState(false);
 
   const HandleShowCreateDep = () => {
+    if(showInterview) {
+      setShowInterview(false)
+    }
     if(showDepts == true) {
       setShowDept(false);
     }
@@ -33,6 +38,9 @@ export function MainMenu() {
   }
 
   const HandleShowDepts = () => {
+    if(showInterview) {
+      setShowInterview(false)
+    }
     if(showEmployees == true) {
       setShowEmployees(false);
     }
@@ -49,6 +57,9 @@ export function MainMenu() {
   }
 
   const HandleShowCreateEmp = () => {
+    if(showInterview) {
+      setShowInterview(false)
+    }
     if(showEmployees == true) {
       setShowEmployees(false);
     }
@@ -65,6 +76,9 @@ export function MainMenu() {
   }
 
   const HandleShowEmp = () => {
+    if(showInterview) {
+      setShowInterview(false)
+    }
     if(showDepts == true) {
       setShowDept(false);
     }
@@ -81,6 +95,9 @@ export function MainMenu() {
   }
 
   const HandleShowCreateApp = () => {
+    if(showInterview) {
+      setShowInterview(false)
+    }
     if(showDepts == true) {
       setShowDept(false);
     }
@@ -96,11 +113,36 @@ export function MainMenu() {
     setShowCreateApp(!showCreateApp)
   }
 
+  const handleShowInterview = () => {
+    if(showCreateApp == true) {
+      setShowCreateApp(false)
+    }
+    if(showDepts == true) {
+      setShowDept(false);
+    }
+    if(showCreateDep == true) {
+      setShowCreateDep(false);
+    }
+    if(showCreateEmp == true) {
+      setShowCreateEmp(false)
+    }
+    if(showEmployees == true) {
+      setShowEmployees(false);
+    }
+    setShowInterview(!showInterview);
+  }
+
   useEffect(() => {
     if (!sessionStorage.getItem("jwt")) {
       navigate("/");
     }
   }, [navigate]);
+
+  const containerInfo = {
+    width: '700px',
+    height: '350px',
+    backgroundColor: 'white'
+  }
 
   return (
     <>
@@ -109,12 +151,18 @@ export function MainMenu() {
       showDepts={HandleShowDepts}
       showCreateEmp={HandleShowCreateEmp}
       showEmp={HandleShowEmp}
-      showCreateApp={HandleShowCreateApp}></Navbar>
+      showCreateApp={HandleShowCreateApp}
+      showInterview={handleShowInterview}>
+      </Navbar>
+      <div style={containerInfo}>
+        <img src="src/assets/qrcode.png" alt="qrcode" style={{width: '150px', height: '150px'}}/>
+      </div>
       {showCreateDep && <CreateDepartment></CreateDepartment>}
       {showDepts && <ShowDepartments></ShowDepartments>}
       {showCreateEmp && <CreateEmployee></CreateEmployee>}
       {showEmployees && <ShowEmployees></ShowEmployees>}
       {showCreateApp && <CreateApplicant></CreateApplicant>}
+      {showInterview && <ShowInterview></ShowInterview>}
     </>
   );
 }
