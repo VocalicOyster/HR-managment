@@ -17,7 +17,8 @@ export function Login() {
     display: "flex",
     placeItems: "center",
     boxShadow: "-5px 5px 15px gray",
-    position: "relative",
+    position: 'relative',
+    left: '750px'
   };
 
   const foreachImgLogo = {

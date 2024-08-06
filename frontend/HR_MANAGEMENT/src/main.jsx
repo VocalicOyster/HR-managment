@@ -1,12 +1,10 @@
 import React from "react";
-import App from "./App.jsx";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Login } from "./components/jsx/Login.jsx"
-import { MainMenu } from "./components/jsx/MainMenu.jsx";
+import { Login } from "./components/jsx/Login.jsx";
 import { Registration } from "./components/jsx/Registration.jsx";
-
+import { MainMenu } from "./components/jsx/MainMenu.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -14,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/main",
-    element: <MainMenu> </MainMenu>,
+    element: <MainMenu></MainMenu>
   },
   {
     path: "/registration",
