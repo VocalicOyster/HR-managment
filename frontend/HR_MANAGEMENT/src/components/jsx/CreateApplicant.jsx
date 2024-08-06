@@ -161,7 +161,6 @@ export function CreateApplicant() {
       return;
     }
 
-    //prima di tutto facciamo un controllo sulla presenza di applicant e interview
     const controlApp = await fetch("http://localhost:8080/api/app/control", {
       method: "POST",
       headers: new Headers({
@@ -219,7 +218,6 @@ export function CreateApplicant() {
       ...prevInterview,
       applicants_id: newApplicantsId,
     }));
-    console.log("Interview: " + interview);
     const createInterview = await fetch(
       "http://localhost:8080/api/interview/",
       {
@@ -280,7 +278,6 @@ export function CreateApplicant() {
       .then((response) => response.json())
       .then((data) => {
         setAvailableTimes(data.data);
-        console.log(availableTimes);
       });
 
     setInterview({

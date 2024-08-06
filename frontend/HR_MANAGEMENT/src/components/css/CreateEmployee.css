@@ -2,5 +2,10 @@
     padding: 40px;
     position: absolute;
     right: 608px;
-    bottom: 100px;
+    bottom: 90px;
+}
+
+#depImg {
+    position: relative;
+    top: 10px;
 }

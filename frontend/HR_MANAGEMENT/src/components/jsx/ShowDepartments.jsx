@@ -24,6 +24,35 @@ export function ShowDepartments() {
 
   }
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    } else {
+      const getDepts = () =>
+        fetch("http://localhost:8080/api/department/list", {
+          method: "GET",
+          headers: new Headers({
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Errore durante il recupero dei dipartimenti.");
+            }
+            return response.json();
+          })
+
+          .then((data) => {
+            setDepts(data.data);
+          });
+
+      getDepts();
+    }
+  }, [token, navigate]);
+
+
+
   const showDepReload = (depts) => {
     return depts.length > 0 ? (
       depts.map((dept) => (
@@ -62,32 +91,6 @@ export function ShowDepartments() {
       });
   };
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    } else {
-      const getDepts = () =>
-        fetch("http://localhost:8080/api/department/list", {
-          method: "GET",
-          headers: new Headers({
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Errore durante il recupero dei dipartimenti.");
-            }
-            return response.json();
-          })
-
-          .then((data) => {
-            setDepts(data.data);
-          });
-
-      getDepts();
-    }
-  }, [token, navigate]);
 
   return (
     <div id="containerDepts">
